@@ -1064,12 +1064,12 @@ function renderHomeLiveTweets() {
   list.innerHTML = state.liveTweets.map(tweet => {
     const selected = state.selectedLiveIds.has(tweet.id);
     const avatar = tweet.author?.profileImageUrl
-      ? `<img src="${escapeHtml(tweet.author.profileImageUrl)}" alt="${escapeHtml(tweet.author.name || tweet.author.username || 'X account')} profile image" loading="lazy">`
+      ? `<img src="${escapeHtml(safeExternalUrl(tweet.author.profileImageUrl))}" alt="${escapeHtml(tweet.author.name || tweet.author.username || 'X account')} profile image" loading="lazy">`
       : `<span class="avatar-fallback">${escapeHtml((tweet.author?.name || tweet.author?.username || '?').slice(0, 1).toUpperCase())}</span>`;
     const media = Array.isArray(tweet.media) && tweet.media.length
       ? `<div class="tweet-media">${tweet.media.map(item => {
           const src = item.url || item.previewImageUrl;
-          return src ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(item.altText || `${item.type || 'media'} preview`)}" loading="lazy">` : `<span class="pill">${escapeHtml(item.type || 'media')}</span>`;
+          return src ? `<img src="${escapeHtml(safeExternalUrl(src))}" alt="${escapeHtml(item.altText || `${item.type || 'media'} preview`)}" loading="lazy">` : `<span class="pill">${escapeHtml(item.type || 'media')}</span>`;
         }).join('')}</div>`
       : '';
     const metrics = tweet.metrics
@@ -1083,7 +1083,7 @@ function renderHomeLiveTweets() {
       <p>${escapeHtml(tweet.text || '(no tweet text returned)')}</p>
       ${media}
       <div class="tweet-meta"><span>${escapeHtml(tweet.createdAt ? new Date(tweet.createdAt).toLocaleString() : 'time unavailable')}</span>${metrics}</div>
-      <a class="source-url" href="${escapeHtml(tweet.url)}" target="_blank" rel="noreferrer">${escapeHtml(tweet.url)}</a>
+      <a class="source-url" href="${escapeHtml(safeExternalUrl(tweet.url))}" target="_blank" rel="noreferrer">${escapeHtml(safeExternalUrl(tweet.url))}</a>
       <div class="tweet-actions">
         <button class="button ghost" data-toggle-live="${escapeHtml(tweet.id)}">${selected ? 'Selected' : 'Select'}</button>
         <button class="button primary" data-rewrite-live="${escapeHtml(tweet.id)}">Rewrite</button>
@@ -1193,12 +1193,12 @@ function renderLiveTweets() {
   list.innerHTML = state.liveTweets.map(tweet => {
     const selected = state.selectedLiveIds.has(tweet.id);
     const avatar = tweet.author?.profileImageUrl
-      ? `<img src="${escapeHtml(tweet.author.profileImageUrl)}" alt="${escapeHtml(tweet.author.name || tweet.author.username || 'X account')} profile image" loading="lazy">`
+      ? `<img src="${escapeHtml(safeExternalUrl(tweet.author.profileImageUrl))}" alt="${escapeHtml(tweet.author.name || tweet.author.username || 'X account')} profile image" loading="lazy">`
       : `<span class="avatar-fallback">${escapeHtml((tweet.author?.name || tweet.author?.username || '?').slice(0, 1).toUpperCase())}</span>`;
     const media = Array.isArray(tweet.media) && tweet.media.length
       ? `<div class="tweet-media">${tweet.media.map(item => {
           const src = item.url || item.previewImageUrl;
-          return src ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(item.altText || `${item.type || 'media'} preview`)}" loading="lazy">` : `<span class="pill">${escapeHtml(item.type || 'media')}</span>`;
+          return src ? `<img src="${escapeHtml(safeExternalUrl(src))}" alt="${escapeHtml(item.altText || `${item.type || 'media'} preview`)}" loading="lazy">` : `<span class="pill">${escapeHtml(item.type || 'media')}</span>`;
         }).join('')}</div>`
       : '';
     const metrics = tweet.metrics
@@ -1212,7 +1212,7 @@ function renderLiveTweets() {
       <p>${escapeHtml(tweet.text || '(no tweet text returned)')}</p>
       ${media}
       <div class="tweet-meta"><span>${escapeHtml(tweet.createdAt ? new Date(tweet.createdAt).toLocaleString() : 'time unavailable')}</span>${metrics}</div>
-      <a class="source-url" href="${escapeHtml(tweet.url)}" target="_blank" rel="noreferrer">${escapeHtml(tweet.url)}</a>
+      <a class="source-url" href="${escapeHtml(safeExternalUrl(tweet.url))}" target="_blank" rel="noreferrer">${escapeHtml(safeExternalUrl(tweet.url))}</a>
       <div class="tweet-actions">
         <button class="button ghost" data-toggle-live="${escapeHtml(tweet.id)}">${selected ? 'Selected' : 'Select'}</button>
         <button class="button primary" data-rewrite-live="${escapeHtml(tweet.id)}">Rewrite</button>
@@ -1351,20 +1351,20 @@ function renderInspiration() {
 function renderInspirationTweetCard(tweet) {
   const selected = state.selectedLiveIds.has(tweet.id);
   const avatar = tweet.author?.profileImageUrl
-    ? `<img src="${escapeHtml(tweet.author.profileImageUrl)}" alt="${escapeHtml(tweet.author.name || tweet.author.username || 'X account')} profile image" loading="lazy">`
+    ? `<img src="${escapeHtml(safeExternalUrl(tweet.author.profileImageUrl))}" alt="${escapeHtml(tweet.author.name || tweet.author.username || 'X account')} profile image" loading="lazy">`
     : `<span>${escapeHtml((tweet.author?.name || tweet.author?.username || '?').slice(0, 1).toUpperCase())}</span>`;
   const media = Array.isArray(tweet.media) && tweet.media.length
     ? `<div class="inspiration-media-strip">${tweet.media.map(item => {
         const src = item.url || item.previewImageUrl;
-        return src ? `<img src="${escapeHtml(src)}" alt="${escapeHtml(item.altText || item.type || 'media preview')}" loading="lazy">` : `<span class="pill">${escapeHtml(item.type || 'media')}</span>`;
+        return src ? `<img src="${escapeHtml(safeExternalUrl(src))}" alt="${escapeHtml(item.altText || item.type || 'media preview')}" loading="lazy">` : `<span class="pill">${escapeHtml(item.type || 'media')}</span>`;
       }).join('')}</div>` : '';
   return `<article class="inspiration-card ${selected ? 'selected' : ''}">
     <header><div class="inspiration-avatar">${avatar}</div><div><strong>${escapeHtml(tweet.author?.name || tweet.author?.username || 'Unknown')}</strong><span>@${escapeHtml(tweet.author?.username || 'unknown')} · ${escapeHtml(tweet.createdAt ? new Date(tweet.createdAt).toLocaleDateString() : 'date unavailable')}</span></div></header>
     <p>${escapeHtml(tweet.text || '(no tweet text returned)')}</p>
     ${media}
-    <a class="more-link" href="${escapeHtml(tweet.url)}" target="_blank" rel="noreferrer">More »</a>
+    <a class="more-link" href="${escapeHtml(safeExternalUrl(tweet.url))}" target="_blank" rel="noreferrer">More »</a>
     <div class="inspiration-metrics">${metricParts(tweet.metrics).map(m => `<span>${escapeHtml(m)}</span>`).join('')}</div>
-    <div class="inspiration-source-row"><span class="pill ok">live X API</span><a href="${escapeHtml(tweet.url)}" target="_blank" rel="noreferrer">source URL</a></div>
+    <div class="inspiration-source-row"><span class="pill ok">live X API</span><a href="${escapeHtml(safeExternalUrl(tweet.url))}" target="_blank" rel="noreferrer">source URL</a></div>
     <div class="tweet-actions compact"><button class="button ghost" data-insp-toggle-live="${escapeHtml(tweet.id)}">${selected ? 'Selected' : 'Select'}</button><button class="button primary" data-insp-rewrite-live="${escapeHtml(tweet.id)}">Rewrite</button><button class="button ghost" data-insp-copy-live="${escapeHtml(tweet.id)}">Copy</button><button class="button ghost" data-insp-save-live="${escapeHtml(tweet.id)}">Save source</button></div>
   </article>`;
 }
@@ -1374,7 +1374,7 @@ function renderInspirationSourceCard(source) {
   const metrics = metricParts(source.engagement || {});
   const tags = Array.isArray(source.tags) ? source.tags : [];
   const date = sourceDate(source);
-  const sourceUrl = source.url ? `<a class="more-link" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">More »</a>` : '<span class="more-link muted">More unavailable</span>';
+  const sourceUrl = source.url ? `<a class="more-link" href="${escapeHtml(safeExternalUrl(source.url))}" target="_blank" rel="noreferrer">More »</a>` : '<span class="more-link muted">More unavailable</span>';
   const media = sourceHasMedia(source) && source.url ? `<div class="inspiration-media-placeholder">Media/source preview available at URL</div>` : '';
   return `<article class="inspiration-card ${selected ? 'selected' : ''}">
     <header><div class="inspiration-avatar"><span>${sourceInitial(source)}</span></div><div><strong>${escapeHtml(source.author || 'saved source')}</strong><span>${escapeHtml(source.sourceType || 'source')} · ${escapeHtml(date ? new Date(date).toLocaleDateString() : 'saved record')}</span></div></header>
@@ -1728,7 +1728,7 @@ function renderSources() {
             <button class="button ghost danger" data-delete-source="${escapeHtml(source.id)}">Delete</button>
           </div>
         </header>
-        ${source.url ? `<a class="source-url" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.url)}</a>` : ''}
+        ${source.url ? `<a class="source-url" href="${escapeHtml(safeExternalUrl(source.url))}" target="_blank" rel="noreferrer">${escapeHtml(safeExternalUrl(source.url))}</a>` : ''}
         <p>${escapeHtml(source.text || '(no source text saved)')}</p>
         ${source.whySaved ? `<p class="source-why">Why saved: ${escapeHtml(source.whySaved)}</p>` : ''}
         ${hints.length ? `<div class="source-hints">${hints.map(h => `<span class="hint ${escapeHtml(h.type)}">${escapeHtml(h.text)}</span>`).join('')}</div>` : ''}
@@ -2710,6 +2710,15 @@ async function generateMoreDrafts() {
 
 function escapeHtml(value) {
   return String(value).replace(/[&<>"]/g, char => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[char]));
+}
+
+function safeExternalUrl(value) {
+  try {
+    const parsed = new URL(String(value || ''));
+    return ['http:', 'https:'].includes(parsed.protocol) ? parsed.href : '';
+  } catch {
+    return '';
+  }
 }
 
 function renderConfigStatus() {
@@ -4653,7 +4662,7 @@ function renderQueue() {
             <span>${escapeHtml(source.sourceType || 'source')}${source.format ? ` · ${escapeHtml(source.format)}` : ''}${qualityLabel ? ` · ${escapeHtml(qualityLabel)}` : ''}</span>
           </div>
         </header>
-        ${source.url ? `<a class="source-url" href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.url)}</a>` : ''}
+        ${source.url ? `<a class="source-url" href="${escapeHtml(safeExternalUrl(source.url))}" target="_blank" rel="noreferrer">${escapeHtml(safeExternalUrl(source.url))}</a>` : ''}
         <p>${escapeHtml(source.text || '(no source text saved)')}</p>
         ${source.suggestedAngle ? `<p class="source-why">Suggested angle: ${escapeHtml(source.suggestedAngle)}</p>` : ''}
         ${source.whyItMayWork ? `<p class="source-why">Why it may work: ${escapeHtml(source.whyItMayWork)}</p>` : ''}
@@ -5911,13 +5920,13 @@ function renderDiscoverResults() {
     const handle = author.username ? `@${author.username}` : 'X source';
     const metrics = tweet.metrics || {};
     const media = Array.isArray(tweet.media) && tweet.media.length
-      ? `<div class="tweet-media">${tweet.media.map(m => `<img src="${escapeHtml(m.url || m.previewImageUrl || '')}" alt="media" loading="lazy">`).join('')}</div>`
+      ? `<div class="tweet-media">${tweet.media.map(m => `<img src="${escapeHtml(safeExternalUrl(m.url || m.previewImageUrl || ''))}" alt="media" loading="lazy">`).join('')}</div>`
       : '';
     return `<article class="post-card discover-card" data-discover-index="${index}">
       <div class="tweet-author"><span class="avatar-fallback">${escapeHtml(initialsFor(name))}</span><div><strong>${escapeHtml(name)}</strong><span>${escapeHtml(handle)} · ${escapeHtml(tweet.createdAt ? new Date(tweet.createdAt).toLocaleDateString() : 'date unavailable')}</span></div></div>
       <p>${escapeHtml(tweet.text || '(no text returned)')}</p>
       ${media}
-      <a href="${escapeHtml(tweet.url || '#')}" target="_blank" rel="noreferrer">More »</a>
+      <a href="${escapeHtml(safeExternalUrl(tweet.url || ''))}" target="_blank" rel="noreferrer">More »</a>
       <div class="tweet-meta"><span>♡ ${formatMetric(metrics.likeCount || 0)}</span><span>↻ ${formatMetric(metrics.repostCount || 0)}</span><span>💬 ${formatMetric(metrics.replyCount || 0)}</span><span>source: ${escapeHtml(tweet.source || state.discover.fetched?.provider || 'x')}</span></div>
       <div class="tweet-actions">
         <button class="button ghost" data-discover-save="${index}" type="button">Save</button>
@@ -6151,7 +6160,7 @@ function renderMyReplies() {
     const dateText = date ? new Date(date).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }) : 'unsaved';
     const parent = reply.parentTweet || reply.originalTweet || (reply.mentionId ? { id: reply.mentionId, author: reply.mentionAuthor || reply.mentionUsername, text: reply.mentionText, url: reply.mentionUrl } : null);
     const parentHtml = parent ? `<div class="reply-parent"><div class="reply-parent-header"><strong>@${escapeHtml(parent.author || parent.username || 'unknown')}</strong><span class="muted">${dateText}</span></div><p class="reply-parent-text">${escapeHtml((parent.text || '').slice(0, 200))}${(parent.text || '').length > 200 ? '…' : ''}</p></div>` : '';
-    const media = Array.isArray(reply.media) && reply.media.length ? `<div class="tweet-media">${reply.media.map(m => `<img src="${escapeHtml(m.url || m.previewImageUrl || '')}" alt="media" loading="lazy">`).join('')}</div>` : '';
+    const media = Array.isArray(reply.media) && reply.media.length ? `<div class="tweet-media">${reply.media.map(m => `<img src="${escapeHtml(safeExternalUrl(m.url || m.previewImageUrl || ''))}" alt="media" loading="lazy">`).join('')}</div>` : '';
     const metrics = reply.metrics ? `<span>♡ ${formatMetric(reply.metrics.likeCount || reply.metrics.likes || 0)}</span><span>↻ ${formatMetric(reply.metrics.repostCount || reply.metrics.retweets || 0)}</span><span>💬 ${formatMetric(reply.metrics.replyCount || reply.metrics.replies || 0)}</span><span>👁 ${formatMetric(reply.metrics.impressionCount || reply.metrics.views || 'unavailable')}</span>` : '<span>metrics unavailable</span>';
     const provenance = Array.isArray(reply.sourceRefs) && reply.sourceRefs.length ? `<div class="tweet-meta"><span>source: ${escapeHtml(reply.sourceRefs.map(s => s.label || s.type || 'unknown').join(', '))}</span></div>` : '';
     return `<article class="post-card reply-card" data-reply-id="${escapeHtml(reply.id)}">
