@@ -1,0 +1,30 @@
+{
+  "name": "tweet-lab",
+  "version": "1.0.0",
+  "private": false,
+  "license": "MIT",
+  "repository": "https://github.com/lucassynnott/hermes-tweet-lab",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "verify": "node scripts/verify-ui.mjs",
+    "verify:mentions": "node scripts/verify-mentions.mjs",
+    "verify:context": "node scripts/verify-context.mjs",
+    "verify:tweet-resolution": "node scripts/verify-tweet-resolution.mjs",
+    "verify:mock": "node scripts/verify-mock-generation.mjs",
+    "verify:goro": "node scripts/verify-goro-generation.mjs",
+    "test:schedule": "node scripts/test-schedule.mjs",
+    "test:store": "node scripts/test-store.mjs",
+    "test:bank": "node scripts/test-inspiration-bank.mjs",
+    "test:drafts": "node scripts/test-draft-lifecycle.mjs",
+    "test:x-history": "node scripts/test-x-history.mjs",
+    "test:home": "node scripts/test-home-generation.mjs",
+    "verify:review-gate": "node scripts/verify-review-gate.js",
+    "verify:live-twitter": "node scripts/verify-live-twitter.mjs",
+    "verify:diagnostics": "node scripts/verify-diagnostics.mjs",
+    "verify:token-leaks": "node scripts/scan-token-leaks.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,38 @@
+# dependencies
+node_modules/
+
+# local env / secrets
+.env
+.env.*
+*.env
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS/editor
+.DS_Store
+.vscode/
+.idea/
+
+# transient local smoke scripts
+.*-smoke.mjs
+.qa-*.mjs
+
+# build/cache outputs
+dist/
+build/
+.cache/
+coverage/
+
+# runtime state (contains drafts, contacts, analytics and audit records)
+data/tweet-lab.json
+data/*.tmp
+
+# public documentation keeps one deliberately sanitized screenshot only
+docs/assets/*.png
+!docs/assets/dashboard.png

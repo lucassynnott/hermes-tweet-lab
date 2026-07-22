@@ -1,0 +1,1273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tweet Lab</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="/styles.css?v=editorial-20260619-2">
+  <link rel="stylesheet" href="/redesign.css?v=clean-20260622-18">
+</head>
+<body>
+  <div class="shell">
+    <aside id="primarySidebar" class="sidebar superx-sidebar" aria-label="Tweet Lab navigation">
+      <div class="brand superx-brand">
+        <div class="brand-left"><span class="brand-mark">🔥</span><h1>Tweet Lab</h1></div>
+        <button class="sidebar-collapse" type="button" aria-label="Collapse sidebar">‹</button>
+      </div>
+      <button id="generateTop" class="button primary create-post-button" type="button"><span>↗</span>Create a post</button>
+      <nav class="nav superx-nav" aria-label="Tweet Lab workflow">
+        <div class="nav-group primary-group">
+          <a href="#home" data-route="home" class="active"><span class="nav-icon">⌂</span><span>Home</span></a>
+          <a href="#queue" data-route="queue"><span class="nav-icon">▦</span><span>Queue</span></a>
+          <a href="#analytics" data-route="analytics"><span class="nav-icon">▥</span><span>Analytics</span></a>
+        </div>
+        <div class="nav-group" aria-label="Engage">
+          <p class="nav-section-label">Engage</p>
+          <a href="#mentions" data-route="mentions"><span class="nav-icon">☑</span><span>Mentions</span></a>
+          <a href="#discover" data-route="discover"><span class="nav-icon">⌕</span><span>Discover</span></a>
+          <a href="#lists" data-route="lists"><span class="nav-icon">☷</span><span>Lists</span></a>
+          <a href="#my-replies" data-route="my-replies"><span class="nav-icon">☏</span><span>My Replies</span></a>
+        </div>
+        <div class="nav-group" aria-label="Create">
+          <p class="nav-section-label">Create</p>
+          <a href="#ready-to-post" data-route="ready-to-post"><span class="nav-icon">⇄</span><span>Ready to Post</span></a>
+          <a href="#inspiration" data-route="inspiration"><span class="nav-icon">◉</span><span>Inspiration</span></a>
+          <a href="#ai-writer" data-route="ai-writer"><span class="nav-icon">✎</span><span>AI Writer</span></a>
+        </div>
+        <div class="nav-group" aria-label="Network">
+          <p class="nav-section-label">Network</p>
+          <a href="#contacts" data-route="contacts"><span class="nav-icon">☼</span><span>Contacts</span></a>
+          <a href="#dms" data-route="dms" data-blocked="true"><span class="nav-icon">✉</span><span>DMs</span><span class="nav-blocked-tag" title="Not supported">off</span></a>
+        </div>
+      </nav>
+      <div class="sidebar-footer">
+        <div class="credits-line"><span>◉</span><span>1,000 credits</span></div>
+        <div class="profile-card">
+          <span class="profile-avatar">L</span>
+          <div><strong>LUCAS</strong><small>@LucasSynnott</small></div>
+          <span class="pro-badge">PRO</span>
+          <span class="chevron">⌃</span>
+        </div>
+      </div>
+    </aside>
+
+    <div id="navScrim" class="nav-scrim" hidden></div>
+    <main class="main">
+      <header class="topbar appbar">
+        <div class="appbar-left">
+          <button id="navToggle" class="nav-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primarySidebar">
+            <span></span><span></span><span></span>
+          </button>
+          <span class="appbar-brand">
+            <span class="brand-mark">🔥</span>
+            <strong>Tweet Lab</strong>
+          </span>
+        </div>
+        <div class="topbar-actions">
+          <span id="adapterBadge" class="adapter-badge">awaiting generation</span>
+          <button id="generateTopLegacy" class="button primary">Generate</button>
+        </div>
+      </header>
+
+      <section id="home" class="page active superx-page inspiration-page home-command-page home-redux" data-page="home">
+        <div class="home-onboard">
+          <article class="onboard-card">
+            <div class="onboard-head">
+              <h3>Your first steps</h3>
+              <p>Get the cockpit dialled in, then let it draft for you.</p>
+            </div>
+            <div class="onboard-steps">
+              <a class="onboard-step" href="#settings">
+                <span class="onboard-step-num">1</span>
+                <span class="onboard-step-body"><strong>Set up your profile</strong><span>Voice, audience, and accounts to emulate</span></span>
+              </a>
+              <button class="onboard-step" type="button" data-open-compose>
+                <span class="onboard-step-num">2</span>
+                <span class="onboard-step-body"><strong>Create a post</strong><span>Write, refine, and schedule from the editor</span></span>
+              </button>
+              <a class="onboard-step" href="#settings">
+                <span class="onboard-step-num">3</span>
+                <span class="onboard-step-body"><strong>Connect Postiz</strong><span>Turn on real scheduling and auto-actions</span></span>
+              </a>
+            </div>
+          </article>
+          <article class="playbook-card">
+            <div class="playbook-body">
+              <p class="eyebrow">playbook</p>
+              <h3>Tweet Lab Playbook</h3>
+              <p>Everything you need to grow on X, drafted from your own signal.</p>
+            </div>
+            <a class="button" href="#ai-writer" role="button">Open AI Writer</a>
+          </article>
+        </div>
+        <header class="home-hero">
+          <p class="eyebrow">private drafting · read-only signal</p>
+          <h2>Turn live signal into drafts worth posting.</h2>
+          <div class="home-composer">
+            <label class="search-shell" aria-label="Operator context or X handles">
+              <span aria-hidden="true">⌕</span>
+              <input id="homeContext" placeholder="What should the drafts argue? Paste a topic, angle, or operator note…">
+            </label>
+            <div class="home-composer-actions">
+              <button id="homeFetchLiveTweets" class="button ghost" type="button">Fetch tweets</button>
+              <button id="homeGenerateButton" class="button primary" type="button">Generate</button>
+            </div>
+          </div>
+          <div class="topic-chip-row" aria-label="Quick topics">
+            <button data-home-topic="AI operators" type="button">AI operators</button>
+            <button data-home-topic="agency leverage" type="button">agency leverage</button>
+            <button data-home-topic="workflow automation" type="button">workflow automation</button>
+            <button data-home-topic="founder operating loops" type="button">founder operating loops</button>
+            <button data-home-topic="tasteful AI systems" type="button">tasteful AI systems</button>
+          </div>
+          <div class="home-meta-row">
+            <div class="home-meta-status">
+              <p id="homeLiveSummary" class="inspiration-result-summary">Loading context…</p>
+              <p id="homeLiveStatus" class="status-note" role="status"></p>
+              <p id="homeGenerateStatus" class="status-note" role="status"></p>
+            </div>
+            <div class="home-meta-actions">
+              <a href="#settings" class="button ghost" role="button">Profile &amp; style</a>
+              <button id="openHomeSettings" class="button ghost" type="button">Settings</button>
+              <button id="openHomeSources" class="button ghost" type="button">Sources</button>
+              <button id="homeClearLiveSelection" class="button ghost" type="button">Clear</button>
+              <button id="homeGenerateMore" class="button ghost" type="button">Generate more</button>
+            </div>
+          </div>
+          <button id="contextGenerateAction" class="button primary" type="button" hidden aria-hidden="true">Generate drafts</button>
+        </header>
+
+        <section class="home-section home-drafts" aria-label="Generated drafts">
+          <div class="home-section-head">
+            <h3>Ready to post</h3>
+            <div class="home-section-head-actions">
+              <span class="pill"><span id="homeSelectedLiveCount">0</span> selected</span>
+              <button class="button ghost" data-go-route="ready-to-post" type="button">View all</button>
+            </div>
+          </div>
+          <div id="homeDraftMasonry" class="masonry-grid empty">
+            <div class="empty-state">
+              <strong>No drafts yet.</strong>
+              <p>Fetch live signal, pick the useful cards, then generate. Every draft stays private until you approve it.</p>
+            </div>
+          </div>
+        </section>
+
+        <details class="home-section home-board home-staging" aria-label="Source staging area">
+          <summary class="home-staging-summary">
+            <span class="home-staging-title"><h3>Staging</h3><span class="home-section-sub">Fetched signal and what you've selected for the next generation.</span></span>
+            <span class="home-staging-chevron" aria-hidden="true">▾</span>
+          </summary>
+          <div class="home-board-grid">
+            <article id="homeLivePanel" class="panel live-panel home-board-panel" aria-label="Live inspiration">
+              <div class="panel-head compact">
+                <h3>Source cards</h3>
+                <button id="homeRefreshLiveTweets" class="button ghost" type="button">Refresh</button>
+              </div>
+              <div id="homeLiveTweetList" class="inspiration-masonry live-tweet-list empty">No live tweets fetched yet.</div>
+            </article>
+
+            <article id="homeSelectedPanel" class="panel selected-panel home-board-panel" aria-label="Selected signal">
+              <div class="panel-head compact">
+                <h3>Drafting queue</h3>
+                <span class="pill">private</span>
+              </div>
+              <div id="homeSelectedLiveList" class="selected-list empty">Select live tweets or saved source cards before generating.</div>
+            </article>
+          </div>
+        </details>
+
+        <dialog id="homeSettingsDialog" class="home-dialog">
+          <form method="dialog" class="home-dialog-card">
+            <header><h3>Generation settings</h3><button class="button ghost" value="close" type="submit">Close</button></header>
+            <div id="homeGenerationControls" class="generation-controls-panel" aria-label="Generation controls">
+              <div class="generation-controls-grid">
+                <label class="generation-field">Inspirational X accounts
+                  <textarea id="homeAccountHandles" rows="2" placeholder="LucasSynnott, @paulg, https://x.com/sama"></textarea>
+                </label>
+                <div id="homeAccountChips" class="chip-row empty">Enter handles separated by comma or newline.</div>
+                <div class="generation-field-inline">
+                  <label>Tone<input id="homeTone" value="sharp, useful, no AI slop"></label>
+                  <label>Count<select id="homeCount"><option>1</option><option selected>2</option><option>3</option></select></label>
+                </div>
+                <div class="generation-field-inline">
+                  <label>Per account<select id="homeLiveLimit"><option>10</option><option selected>15</option><option>20</option></select></label>
+                  <label>Replies<select id="homeExcludeReplies"><option value="true" selected>exclude</option><option value="false">include</option></select></label>
+                  <label>Media<select id="homeMediaOnly"><option value="false" selected>all tweets</option><option value="true">media only</option></select></label>
+                </div>
+                <label class="generation-field">Optional pasted tweet links
+                  <textarea id="homeInspirationLinks" rows="2" placeholder="https://x.com/.../status/..."></textarea>
+                </label>
+                <label class="generation-field">Template<select id="homeTemplateSelect"><option value="">none</option></select></label>
+                <div id="homeRecipeCardSelector" class="recipe-card-selector empty">No templates saved yet.</div>
+              </div>
+            </div>
+          </form>
+        </dialog>
+
+        <dialog id="homeSourcesDialog" class="home-dialog">
+          <form method="dialog" class="home-dialog-card">
+            <header><h3>Source status</h3><button class="button ghost" value="close" type="submit">Close</button></header>
+            <article id="contextStatusCard" class="panel context-status-card" aria-label="Context loaded status">
+              <div class="context-status-hero"><div><p class="eyebrow">context loaded</p><h3 id="contextStatusTitle">Sources ready for generation.</h3><p id="contextStatusSummary" class="muted">Voice DNA, previous posts, vault, company context, source bank, and live X read-only status.</p></div></div>
+              <div class="context-grid" aria-label="Source context tiles">
+                <div class="context-tile" data-context-tile="voice-dna"><span id="dashVoiceDna" class="context-value">loading</span><p>Voice DNA</p></div>
+                <div class="context-tile" data-context-tile="previous-posts"><span id="dashPreviousPosts" class="context-value">loading</span><p>Previous posts</p></div>
+                <div class="context-tile" data-context-tile="obsidian"><span id="dashObsidian" class="context-value">loading</span><p>Obsidian vault</p></div>
+                <div class="context-tile" data-context-tile="company"><span id="dashCompany" class="context-value">loading</span><p>Company context</p></div>
+                <div class="context-tile" data-context-tile="source-bank"><span id="dashSourceBank" class="context-value">loading</span><p>Source bank</p></div>
+                <div class="context-tile" data-context-tile="live-x"><span id="dashLiveX" class="context-value">loading</span><p>Live X read</p></div>
+              </div>
+              <div id="contextWarnings" class="context-warnings empty">Context warnings will appear here.</div>
+            </article>
+          </form>
+        </dialog>
+      </section>
+
+
+      <section id="analytics" class="page" data-page="analytics">
+        <div class="superx-page analytics-page">
+          <header class="superx-page-head">
+            <div>
+              <h2>Analytics</h2>
+              <p class="analytics-disclaimer">Local operational analytics from Tweet Lab drafts, queue, source bank, and read-only X source snapshots. Live X account analytics are unavailable unless explicitly verified server-side.</p>
+            </div>
+            <label class="date-range-control">
+              <span>Date range</span>
+              <select id="analyticsRange">
+                <option value="30" selected>30 days</option>
+                <option value="60">60 days</option>
+                <option value="90">90 days</option>
+              </select>
+            </label>
+          </header>
+
+          <section id="analyticsMetricGrid" class="analytics-metric-grid" aria-label="Local operational metric cards"></section>
+
+          <section class="analytics-heatmap-card">
+            <div class="analytics-section-head">
+              <h3 id="analyticsStreakTitle">0-day streak, local activity</h3>
+              <p>Draft generation and scheduling activity from persisted Tweet Lab records. Not X engagement analytics.</p>
+            </div>
+            <div id="analyticsHeatmap" class="analytics-heatmap" aria-label="Local posting and generation heatmap"></div>
+          </section>
+
+          <section class="analytics-tabs-card">
+            <div class="analytics-tabs" role="tablist" aria-label="Analytics views">
+              <button class="active" type="button" data-analytics-tab="engagement">Operational mix</button>
+              <button type="button" data-analytics-tab="activity">Activity time / source</button>
+            </div>
+            <div id="analyticsSmallCards" class="analytics-small-grid"></div>
+          </section>
+
+          <section class="analytics-chart-card">
+            <div class="analytics-section-head">
+              <h3 id="analyticsLargeChartTitle">Generated Drafts</h3>
+              <p id="analyticsLargeChartNote">Local draft creation trend over the selected range.</p>
+            </div>
+            <div id="analyticsLargeChart" class="analytics-large-chart" aria-label="Local analytics line chart"></div>
+          </section>
+        </div>
+      </section>
+
+      <section id="inspiration" class="page" data-page="inspiration">
+        <div class="superx-page inspiration-page">
+          <header class="superx-page-head">
+            <div>
+              <h2>Inspiration</h2>
+              <p>Discover saved sources, live X posts, source notes, and media. Nothing publishes from here.</p>
+            </div>
+            <div class="superx-head-actions">
+              <button id="openSourceBankTools" class="button ghost" type="button">Source tools</button>
+              <button id="inspirationRefresh" class="button ghost" type="button">Refresh</button>
+            </div>
+          </header>
+
+          <nav class="superx-tabs" aria-label="Inspiration result type">
+            <button class="active" data-inspiration-tab="posts" type="button">Posts <span id="inspirationPostsCount">0</span></button>
+            <button data-inspiration-tab="articles" type="button">Articles <span id="inspirationArticlesCount">0</span></button>
+            <button data-inspiration-tab="media" type="button">Media <span id="inspirationMediaCount">0</span></button>
+          </nav>
+
+          <section class="inspiration-search-card" aria-label="Search inspiration">
+            <div class="superx-search-row">
+              <label class="search-shell" aria-label="Search by keyword or X handle">
+                <span>⌕</span>
+                <input id="inspirationSearch" placeholder="Search by keyword, paste @accounts, or use a topic chip…">
+              </label>
+              <button id="inspirationSearchButton" class="button primary" type="button">Search</button>
+              <label class="compact-select">Time range
+                <select id="inspirationTimeRange">
+                  <option value="week" selected>Past week</option>
+                  <option value="month">Past month</option>
+                  <option value="quarter">Past 90 days</option>
+                  <option value="all">All time</option>
+                </select>
+              </label>
+              <label class="compact-select">Accounts / sources
+                <select id="inspirationSourceScope">
+                  <option value="all" selected>All accounts</option>
+                  <option value="live">Live X accounts</option>
+                  <option value="saved">Saved sources</option>
+                  <option value="notes">Notes/articles</option>
+                  <option value="media">Media sources</option>
+                </select>
+              </label>
+            </div>
+            <div class="topic-chip-row" aria-label="Suggested topics">
+              <button data-topic-chip="AI coding tips" type="button">AI coding tips</button>
+              <button data-topic-chip="marketing strategies" type="button">marketing strategies</button>
+              <button data-topic-chip="startup advice" type="button">startup advice</button>
+              <button data-topic-chip="productivity hacks" type="button">productivity hacks</button>
+              <button data-topic-chip="design inspiration" type="button">design inspiration</button>
+              <button data-topic-chip="growth tactics" type="button">growth tactics</button>
+              <button data-topic-chip="tech trends" type="button">tech trends</button>
+            </div>
+            <details class="advanced-filter-row" id="inspirationAdvancedFilters">
+              <summary>Advanced Filters</summary>
+              <div class="advanced-filter-grid">
+                <label>Saved-source tag<input id="queueTag" placeholder="operator-loop"></label>
+                <label>Format<select id="queueFormat"><option value="">any</option><option value="contrarian">contrarian</option><option value="list">list</option><option value="story">story</option><option value="how-to">how-to</option><option value="warning">warning</option><option value="framework">framework</option><option value="reply">reply</option></select></label>
+                <label>Queue count<select id="queueCount"><option>5</option><option selected>7</option><option>10</option></select></label>
+                <label>Live limit<select id="inspirationLiveLimit"><option>10</option><option selected>15</option><option>20</option></select></label>
+              </div>
+              <p class="helper-copy">For live X, enter account handles in the search bar and set Accounts / sources to Live X accounts. Reads stay server-side and read-only.</p>
+            </details>
+            <div class="inspiration-action-row">
+              <div>
+                <p id="inspirationResultSummary" class="inspiration-result-summary">Loading inspiration…</p>
+                <p id="queueStatus" class="status-note" role="status"></p>
+              </div>
+              <div class="button-row">
+                <button id="buildQueue" class="button ghost" type="button">Build saved-source queue</button>
+                <button id="generateFromQueue" class="button primary" type="button" disabled>Generate from selected</button>
+              </div>
+            </div>
+          </section>
+
+          <div id="inspirationResults" class="inspiration-masonry empty">Loading sources…</div>
+
+          <details id="sourceBankTools" class="panel source-bank-tools">
+            <summary>Source CRUD / import / export</summary>
+            <div class="grid two">
+              <article class="panel"><p class="eyebrow">source bank</p><h3>Save source material</h3><input id="sourceId" type="hidden"><label>Source URL<input id="sourceUrl" placeholder="https://x.com/author/status/123"></label><div class="inline-fields"><label>Status ID<input id="sourceStatusId"></label><label>Source type<select id="sourceType"><option value="tweet">tweet</option><option value="trend">trend</option><option value="manual">manual</option><option value="note">note</option><option value="article">article</option><option value="media">media</option></select></label></div><label>Author<input id="sourceAuthor"></label><label>Source text / manual note<textarea id="sourceText" rows="6"></textarea></label><div class="inline-fields"><label>Tags<input id="sourceTags"></label><label>Format<select id="sourceFormat"><option value="">unset</option><option value="contrarian">contrarian</option><option value="list">list</option><option value="story">story</option><option value="how-to">how-to</option><option value="warning">warning</option><option value="framework">framework</option><option value="reply">reply</option></select></label></div><label>Why saved<textarea id="sourceWhySaved" rows="3"></textarea></label>
+              <div class="inline-fields">
+                <label>Collection<input id="sourceCollection" placeholder="e.g. operators, threads, quotes"></label>
+                <label>Quality score
+                  <select id="sourceQualityScore">
+                    <option value="">unset</option>
+                    <option value="1">1 - weak</option>
+                    <option value="2">2</option>
+                    <option value="3">3 - decent</option>
+                    <option value="4">4</option>
+                    <option value="5">5 - strong</option>
+                  </select>
+                </label>
+              </div>
+              <div class="inline-fields">
+                <label>Hook pattern<input id="sourceHookPattern" placeholder="e.g. contrarian-take, story-moment"></label>
+                <label>Stale?
+                  <select id="sourceStale">
+                    <option value="">unset</option>
+                    <option value="false">fresh</option>
+                    <option value="true">stale / risky</option>
+                  </select>
+                </label>
+              </div>
+              <label>Stale / risk notes<textarea id="sourceStaleReason" rows="2" placeholder="Why is this stale or risky? Old news, unverified claim, missing attribution..."></textarea></label>
+              <label>Risk notes<textarea id="sourceRiskNotes" rows="2" placeholder="Operator warnings: unverified claim, missing attribution, engagement may be inflated..."></textarea></label>
+              <label>Engagement JSON<textarea id="sourceEngagement" rows="3">{}</textarea></label>
+              <label>Warnings<input id="sourceWarnings"></label>
+              <div class="button-row"><button id="saveSource" class="button primary">Save source</button><button id="resetSourceForm" class="button ghost">Reset</button></div>
+              <p id="sourceStatus" class="status-note" role="status"></p></article>
+              <article class="panel import-export-panel mobile-collapsible" data-mobile-title="Source import / export"><p class="eyebrow">backup</p><h3>Import / export JSON</h3><div class="button-row"><button id="exportSources" class="button ghost">Export JSON</button><button id="importSources" class="button primary">Import JSON</button><button id="seedDemoSources" class="button ghost">Seed local example sources</button><button id="resetDemoSources" class="button ghost danger">Remove demo sources</button></div><label>Import/export JSON<textarea id="sourceImportJson" rows="16"></textarea></label><label>Import mode<select id="sourceImportMode"><option value="merge" selected>merge</option><option value="replace">replace</option></select></label><p id="sourceImportStatus" class="status-note" role="status"></p></article>
+            </div>
+            <article class="panel bank-list-panel"><div class="panel-head"><div><p class="eyebrow">legacy filter</p><h3>Inspiration Bank</h3></div><div class="button-row"><button id="refreshSources" class="button ghost">Refresh</button></div></div><p class="helper-copy">Full source bank remains here for precise CRUD. The main Inspiration grid above is the uncluttered SuperX-style working surface.</p><div class="filter-row"><label>Search text<input id="sourceSearch"></label><label>Tag<input id="sourceTagFilter"></label><label>Author<input id="sourceAuthorFilter"></label><label>Format<select id="sourceFormatFilter"><option value="">any</option><option value="contrarian">contrarian</option><option value="list">list</option><option value="story">story</option><option value="how-to">how-to</option><option value="warning">warning</option><option value="framework">framework</option><option value="reply">reply</option></select></label><label>Collection<input id="sourceCollectionFilter" placeholder="any"></label><label>Min quality<select id="sourceMinQualityFilter"><option value="">any</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option><option value="5">5</option></select></label><label>Hook pattern<input id="sourceHookPatternFilter" placeholder="any"></label><label>Stale<select id="sourceStaleFilter"><option value="">any</option><option value="fresh">fresh only</option><option value="stale">stale only</option></select></label><label>Sort by<select id="sourceSortBy"><option value="newest">newest</option><option value="quality">quality</option><option value="stale">stale first</option></select></label></div><div id="sourceList" class="source-list empty">No sources saved yet.</div></article>
+          </details>
+
+          <pre id="queueReceipt" class="receipt compact-receipt visually-quiet">No queue built yet.</pre>
+          <div id="queueList" class="source-list empty visually-quiet">No queue built yet.</div>
+          <span id="queueSelectedCount" hidden>0</span>
+        </div>
+      </section>
+
+      <section id="ready-to-post" class="page superx-page" data-page="ready-to-post">
+        <span data-route="drafts" hidden>Ready-To-Post legacy route alias</span>
+        <div class="page-heading">
+          <div>
+            <h2>Ready to Post</h2>
+            <p class="muted">AI-generated posts ready for review, approval, and safe scheduling.</p>
+          </div>
+          <div class="button-row">
+            <button id="customizeStyleBtn" class="button ghost" type="button"><span>✎</span> Customize style</button>
+            <button id="generateMoreBtn" class="button ghost" type="button"><span>↻</span> Generate more</button>
+          </div>
+        </div>
+
+        <div class="superx-tabs" id="draftTabs">
+          <button class="superx-tab active" data-draft-tab="all">All <span id="tabCountAll">0</span></button>
+          <button class="superx-tab" data-draft-tab="for-you">For You <span id="tabCountForYou">0</span></button>
+          <button class="superx-tab" data-draft-tab="company">Company <span id="tabCountCompany">0</span></button>
+          <button class="superx-tab" data-draft-tab="vault">Vault <span id="tabCountVault">0</span></button>
+          <button class="superx-tab" data-draft-tab="inspiration">Inspiration <span id="tabCountInspiration">0</span></button>
+          <button class="superx-tab" data-draft-tab="needs-proof">Needs Proof <span id="tabCountNeedsProof">0</span></button>
+          <button class="superx-tab" data-draft-tab="approved">Approved <span id="tabCountApproved">0</span></button>
+        </div>
+
+        <p id="draftStatus" class="status-note" role="status"></p>
+        <div class="legacy-draft-controls" hidden>
+          <select id="draftStatusFilter" aria-label="Legacy draft status filter"><option value="">all</option><option value="generated">generated</option><option value="needs-proof">needs-proof</option><option value="approved">approved</option><option value="scheduled">scheduled</option><option value="rejected">rejected</option><option value="posted">posted</option></select>
+          <select id="draftSort" aria-label="Legacy draft sort"><option value="newest">newest</option><option value="oldest">oldest</option></select>
+          <button id="refreshDrafts" type="button">Refresh drafts</button>
+          <button id="clearDrafts" type="button">Clear drafts</button>
+        </div>
+
+        <div id="draftList" class="masonry-grid empty">No drafts yet. Generate from the Home or AI Writer.</div>
+
+        <!-- Draft Edit Modal -->
+        <div id="draftEditModal" class="draft-modal hidden" aria-hidden="true">
+          <div class="draft-modal-overlay"></div>
+          <div class="draft-modal-card">
+            <div class="draft-modal-header">
+              <div>
+                <p class="eyebrow">draft review</p>
+                <h3 id="modalDraftAngle">Draft</h3>
+              </div>
+              <button id="closeDraftModal" class="button ghost" aria-label="Close">×</button>
+            </div>
+            <div id="modalDraftMeta" class="draft-modal-meta"></div>
+            <textarea id="modalDraftEditor" rows="10"></textarea>
+            <div id="modalDraftProvenance"></div>
+            <div id="modalDraftSuggestions"></div>
+            <div class="draft-modal-actions">
+              <button class="button ghost" id="modalSave">Save edit</button>
+              <button class="button ghost" id="modalReview">Re-run gate</button>
+              <button class="button ghost" id="modalNeedsProof">Needs proof</button>
+              <button class="button primary" id="modalApprove">Approve</button>
+              <button class="button ghost" id="modalCopy">Copy draft</button>
+              <button class="button ghost" id="modalSchedule">Use for schedule</button>
+            </div>
+            <div class="reject-row">
+              <input id="modalRejectReason" placeholder="Reject reason">
+              <button class="button ghost danger" id="modalReject">Reject</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Style Customization Drawer -->
+        <div id="styleDrawer" class="style-drawer hidden" aria-hidden="true">
+          <div class="style-drawer-overlay"></div>
+          <div class="style-drawer-panel">
+            <div class="style-drawer-header">
+              <h3>Customize style</h3>
+              <button id="closeStyleDrawer" class="button ghost">×</button>
+            </div>
+            <div class="style-drawer-body">
+              <label>Tone
+                <input id="styleTone" value="sharp, useful, no AI slop">
+              </label>
+              <label>Voice intensity
+                <select id="styleIntensity">
+                  <option value="mild">Mild</option>
+                  <option value="normal" selected>Normal</option>
+                  <option value="aggressive">Aggressive</option>
+                </select>
+              </label>
+              <label>Line breaks
+                <select id="styleLineBreaks">
+                  <option value="minimal">Minimal</option>
+                  <option value="natural" selected>Natural</option>
+                  <option value="heavy">Heavy</option>
+                </select>
+              </label>
+              <label>Profanity
+                <select id="styleProfanity">
+                  <option value="clean">Clean</option>
+                  <option value="natural" selected>Natural</option>
+                  <option value="heavy">Heavy</option>
+                </select>
+              </label>
+              <label>Forbidden patterns (one per line)
+                <textarea id="styleForbidden" rows="4" placeholder="that&#39;s the X; everything else is Y&#10;the real X is Y&#10;agree?&#10;🧵"></textarea>
+              </label>
+              <div class="style-drawer-footer">
+                <button id="saveStylePrefs" class="button primary">Save preferences</button>
+                <button id="resetStylePrefs" class="button ghost">Reset to default</button>
+              </div>
+              <p class="helper-copy">Style preferences are saved locally in your browser. They do not modify the voice DNA source file.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="workshop" class="page" data-page="workshop">
+        <article class="panel">
+          <div class="panel-head">
+            <div><p class="eyebrow">draft workshop</p><h3>Compare candidates, check source alignment, remix the strongest angle.</h3></div>
+            <div class="button-row">
+              <button id="refreshWorkshop" class="button ghost">Refresh</button>
+              <button id="clearWorkshop" class="button ghost">Clear</button>
+            </div>
+          </div>
+          <p id="workshopStatus" class="status-note" role="status"></p>
+          <div id="workshopEmpty" class="draft-list empty">No drafts to compare. Generate from the Workbench first.</div>
+          <div id="workshopCompare" class="workshop-compare" style="display:none;">
+            <div class="workshop-toolbar">
+              <label class="workshop-label">Select drafts to compare</label>
+              <div class="button-row">
+                <button id="compareSelected" class="button primary" disabled>Compare selected</button>
+                <button id="selectAllWorkshop" class="button ghost">Select all</button>
+                <button id="clearWorkshopSelection" class="button ghost">Clear selection</button>
+              </div>
+            </div>
+            <div id="workshopCandidateList" class="workshop-candidate-list"></div>
+          </div>
+        </article>
+        <article id="workshopDetailPanel" class="panel" style="display:none;">
+          <div class="panel-head">
+            <div><p class="eyebrow">comparison view</p><h3>Side-by-side candidate analysis</h3></div>
+            <button id="closeWorkshopDetail" class="button ghost">Close</button>
+          </div>
+          <div id="workshopDetail" class="workshop-detail"></div>
+        </article>
+        <article id="workshopRemixPanel" class="panel" style="display:none;">
+          <div class="panel-head">
+            <div><p class="eyebrow">remix</p><h3>Remix selected candidate</h3></div>
+          </div>
+          <label>Instruction
+            <textarea id="remixInstruction" rows="3" placeholder="What should change? e.g., 'shorter, more direct, drop the metaphor'"></textarea>
+          </label>
+          <div class="inline-fields">
+            <label>Tone
+              <input id="remixTone" value="sharp, useful, no AI slop">
+            </label>
+            <label>Count
+              <select id="remixCount">
+                <option>1</option>
+                <option selected>2</option>
+                <option>3</option>
+              </select>
+            </label>
+          </div>
+          <div class="button-row">
+            <button id="remixButton" class="button primary">Remix selected</button>
+            <button id="cancelRemix" class="button ghost">Cancel</button>
+          </div>
+          <p id="remixStatus" class="status-note" role="status"></p>
+        </article>
+      </section>
+
+      <section id="queue" class="page queue-page" data-page="queue">
+        <article class="queue-banner" aria-label="Queue fill prompt">
+          <div>
+            <strong>Fill your queue with reviewed posts</strong>
+            <p>Use approved drafts, saved sources, or generated posts to keep Lucas's posting calendar ready. Postiz writes stay safe-blocked unless credentials are configured.</p>
+          </div>
+          <div class="queue-banner-actions">
+            <button id="browsePosts" class="button queue-blue" type="button">Browse posts ›</button>
+            <button class="queue-dismiss" type="button" aria-label="Dismiss queue banner">×</button>
+          </div>
+        </article>
+
+        <header class="queue-header">
+          <div class="queue-title-row">
+            <h2>Queue</h2>
+            <button class="queue-account" type="button" aria-label="Selected X account">
+              <span class="queue-avatar">L</span>
+              <span>@LucasSynnott</span>
+              <span aria-hidden="true">⌄</span>
+            </button>
+          </div>
+          <div class="queue-view-controls" aria-label="Queue controls">
+            <button class="queue-icon-button active" data-calendar-view="week" type="button" aria-label="Calendar list view">☰</button>
+            <button class="queue-icon-button" data-calendar-view="list" type="button" aria-label="Compact table view">▣</button>
+          </div>
+        </header>
+
+        <div class="queue-tabbar" role="tablist" aria-label="Queue status tabs">
+          <button class="queue-tab active" data-queue-tab="scheduled" type="button" role="tab">Scheduled</button>
+          <button class="queue-tab" data-queue-tab="drafts" type="button" role="tab">Drafts <span id="queueDraftCount">0</span></button>
+          <button class="queue-tab" data-queue-tab="posted" type="button" role="tab">Posted <span id="queuePostedCount">0</span></button>
+          <button class="queue-tab" data-queue-tab="failed" type="button" role="tab">Failed <span id="queueFailedCount">0</span></button>
+        </div>
+
+        <div class="queue-toolbar">
+          <p id="queueSummary" class="status-note" role="status"></p>
+          <div class="queue-toolbar-actions">
+            <button class="button ghost queue-tags" type="button" disabled>⌖ Tags</button>
+            <button id="editQueueButton" class="button queue-edit-button" type="button">✎ Edit Queue</button>
+            <button id="refreshQueue" class="button ghost" type="button">Refresh</button>
+          </div>
+        </div>
+
+        <article id="queueEditPanel" class="panel queue-edit-panel" hidden>
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">edit queue</p>
+              <h3>Posting slots and Postiz handoff</h3>
+              <p class="helper-copy">These controls preserve the existing schedule slot storage. Slots create suggested posting windows only; the Postiz form still requires an approved draft and server-side credentials before any public scheduling write.</p>
+            </div>
+          </div>
+          <div class="grid two">
+            <article class="queue-edit-card">
+              <p class="eyebrow">configured slots</p>
+              <div class="inline-fields"><label>Weekday<select id="slotWeekday"><option value="0">Sun</option><option value="1" selected>Mon</option><option value="2">Tue</option><option value="3">Wed</option><option value="4">Thu</option><option value="5">Fri</option><option value="6">Sat</option></select></label><label>Hour<input id="slotHour" type="number" min="0" max="23" value="9"></label><label>Weight<input id="slotWeight" type="number" min="0" max="10" value="2"></label><label>Timezone<input id="slotTimezone" value="UTC"></label></div>
+              <label>Label<input id="slotLabel" placeholder="Morning push"></label>
+              <div class="button-row"><button id="addSlot" class="button primary">Add slot</button><button id="resetSlotForm" class="button ghost">Reset</button><button id="seedSlots" class="button ghost">Seed local example slots</button><button id="resetDemoSchedule" class="button ghost danger">Remove demo slots</button></div>
+              <p id="slotStatus" class="status-note" role="status"></p>
+              <div id="slotList" class="slot-list empty">No slots configured.</div>
+            </article>
+            <article class="queue-edit-card">
+              <p class="eyebrow">suggestions + Postiz</p>
+              <div class="inline-fields"><label>Lookahead days<select id="suggestLookahead"><option>3</option><option selected>7</option><option>10</option><option>14</option></select></label><label>From<input id="suggestFrom" placeholder="defaults to now"></label><label>Conflict window<select id="conflictWindowSelect"><option value="15">15 min</option><option value="30" selected>30 min</option><option value="60">60 min</option></select></label></div>
+              <div class="button-row"><button id="refreshSuggestions" class="button primary">Refresh suggestions</button></div>
+              <p id="suggestStatus" class="status-note" role="status"></p>
+              <div id="suggestionsList" class="suggestions-list empty">No suggestions yet.</div>
+              <div class="queue-postiz-form">
+                <label>Draft content<textarea id="scheduleContent" rows="6"></textarea></label>
+                <label>Approved draft id<input id="scheduleDraftId"></label>
+                <div class="inline-fields"><label>Date/time<input id="scheduledAt" type="datetime-local"></label><label>Timezone<input id="timezone" value="UTC"></label></div>
+                <div id="conflictWarning" class="conflict-warning empty"></div>
+                <label>Postiz integration id<input id="integrationId" placeholder="uses POSTIZ_X_INTEGRATION_ID if blank"></label>
+                <label>Postiz settings JSON<textarea id="settingsJson" rows="4">{}</textarea></label>
+                <button id="scheduleButton" class="button primary">Schedule through Postiz</button>
+                <p id="scheduleStatus" class="status-note" role="status"></p>
+                <pre id="scheduleReceipt" class="receipt compact-receipt">No schedule attempt yet.</pre>
+              </div>
+            </article>
+          </div>
+        </article>
+
+        <div id="conflictList" class="conflict-list empty">No conflicts.</div>
+        <div id="approvedIntakeList" class="queue-hidden-intake approved-intake-list empty" hidden>No approved drafts waiting for schedule.</div>
+        <p id="approvedIntakeSummary" class="status-note queue-hidden-intake" hidden></p>
+        <div id="queueCalendar" class="superx-queue-list empty">No scheduled drafts yet.</div>
+        <div id="queueListCalendar" class="queue-list-calendar empty" hidden>No scheduled drafts yet.</div>
+      </section>
+
+      <section id="library" class="page" data-page="library">
+        <span data-page="bank" data-route="bank" hidden></span>
+        <span data-page="templates" data-route="templates" hidden></span>
+        <div class="library-tabs"><button class="button ghost active" data-tab-target="sourcesTab">Sources</button><button class="button ghost" data-tab-target="templatesTab">Templates</button></div>
+        <div id="sourcesTab" class="library-tab active">
+          <div class="grid two">
+            <article class="panel"><p class="eyebrow">source bank</p><h3>Save source material</h3><input id="sourceId" type="hidden"><label>Source URL<input id="sourceUrl" placeholder="https://x.com/author/status/123"></label><div class="inline-fields"><label>Status ID<input id="sourceStatusId"></label><label>Source type<select id="sourceType"><option value="tweet">tweet</option><option value="trend">trend</option><option value="manual">manual</option><option value="note">note</option></select></label></div><label>Author<input id="sourceAuthor"></label><label>Source text / manual note<textarea id="sourceText" rows="6"></textarea></label><div class="inline-fields"><label>Tags<input id="sourceTags"></label><label>Format<select id="sourceFormat"><option value="">unset</option><option value="contrarian">contrarian</option><option value="list">list</option><option value="story">story</option><option value="how-to">how-to</option><option value="warning">warning</option><option value="framework">framework</option><option value="reply">reply</option></select></label></div><label>Why saved<textarea id="sourceWhySaved" rows="3"></textarea></label>
+            <div class="inline-fields">
+              <label>Collection<input id="sourceCollection" placeholder="e.g. operators, threads, quotes"></label>
+              <label>Quality score
+                <select id="sourceQualityScore">
+                  <option value="">unset</option>
+                  <option value="1">1 - weak</option>
+                  <option value="2">2</option>
+                  <option value="3">3 - decent</option>
+                  <option value="4">4</option>
+                  <option value="5">5 - strong</option>
+                </select>
+              </label>
+            </div>
+            <div class="inline-fields">
+              <label>Hook pattern<input id="sourceHookPattern" placeholder="e.g. contrarian-take, story-moment"></label>
+              <label>Stale?
+                <select id="sourceStale">
+                  <option value="">unset</option>
+                  <option value="false">fresh</option>
+                  <option value="true">stale / risky</option>
+                </select>
+              </label>
+            </div>
+            <label>Stale / risk notes<textarea id="sourceStaleReason" rows="2" placeholder="Why is this stale or risky? Old news, unverified claim, missing attribution..."></textarea></label>
+            <label>Risk notes<textarea id="sourceRiskNotes" rows="2" placeholder="Operator warnings: unverified claim, missing attribution, engagement may be inflated..."></textarea></label>
+            <label>Engagement JSON<textarea id="sourceEngagement" rows="3">{}</textarea></label>
+            <label>Warnings<input id="sourceWarnings"></label>
+            <div class="button-row"><button id="saveSource" class="button primary">Save source</button><button id="resetSourceForm" class="button ghost">Reset</button></div>
+            <p id="sourceStatus" class="status-note" role="status"></p></article>
+            <article class="panel import-export-panel mobile-collapsible" data-mobile-title="Source import / export"><p class="eyebrow">backup</p><h3>Import / export JSON</h3><div class="button-row"><button id="exportSources" class="button ghost">Export JSON</button><button id="importSources" class="button primary">Import JSON</button></div><label>Import/export JSON<textarea id="sourceImportJson" rows="16"></textarea></label><label>Import mode<select id="sourceImportMode"><option value="merge" selected>merge</option><option value="replace">replace</option></select></label><p id="sourceImportStatus" class="status-note" role="status"></p></article>
+          </div>
+          <article class="panel bank-list-panel"><div class="panel-head"><div><p class="eyebrow">filter</p><h3>Inspiration Bank</h3></div><div class="button-row"><button id="seedDemoSources" class="button ghost">Seed local example sources</button><button id="resetDemoSources" class="button ghost danger">Remove demo sources</button><button id="refreshSources" class="button ghost">Refresh</button></div></div><p class="helper-copy">Saved sources bridge live account research into repeatable drafting. Demo sources are local examples only; fetch real tweets in Workbench for verified live data.</p><div class="filter-row"><label>Search text<input id="sourceSearch"></label><label>Tag<input id="sourceTagFilter"></label><label>Author<input id="sourceAuthorFilter"></label><label>Format<select id="sourceFormatFilter"><option value="">any</option><option value="contrarian">contrarian</option><option value="list">list</option><option value="story">story</option><option value="how-to">how-to</option><option value="warning">warning</option><option value="framework">framework</option><option value="reply">reply</option></select></label><label>Collection<input id="sourceCollectionFilter" placeholder="any"></label><label>Min quality<select id="sourceMinQualityFilter"><option value="">any</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option><option value="5">5</option></select></label><label>Hook pattern<input id="sourceHookPatternFilter" placeholder="any"></label><label>Stale<select id="sourceStaleFilter"><option value="">any</option><option value="fresh">fresh only</option><option value="stale">stale only</option></select></label><label>Sort by<select id="sourceSortBy"><option value="newest">newest</option><option value="quality">quality</option><option value="stale">stale first</option></select></label></div><div id="sourceList" class="source-list empty">No sources saved yet.</div></article>
+        </div>
+        <div id="templatesTab" class="library-tab">
+          <div class="grid two"><article class="panel"><p class="eyebrow">template library</p><h3>Save reusable tweet structures</h3><input id="templateId" type="hidden"><label>Name<input id="templateName"></label><label>Template body<textarea id="templateBody" rows="6" placeholder="The structural skeleton Goro fills in."></textarea></label><div class="inline-fields"><label>Tags<input id="templateTags" placeholder="operator-loop, positioning"></label><label>Formats<input id="templateFormats" placeholder="contrarian, framework"></label></div><label>Note<textarea id="templateNote" rows="2" placeholder="Internal operator note."></textarea></label><details class="recipe-details"><summary>Recipe fields (intent, constraints, examples)</summary><label>Intent<textarea id="templateIntent" rows="2" placeholder="What this recipe is designed to produce."></textarea></label><label>When to use<textarea id="templateWhenToUse" rows="2" placeholder="Trigger conditions for reaching for this recipe."></textarea></label><label>Constraints<textarea id="templateConstraints" rows="2" placeholder="Hard rules Goro must follow (e.g. max 200 chars, no questions)."></textarea></label><label>Example output<textarea id="templateExampleOutput" rows="3" placeholder="A concrete example of what this recipe produces."></textarea></label><label>Source requirements<textarea id="templateSourceRequirements" rows="2" placeholder="What kind of source material this recipe needs."></textarea></label><label>Forbidden patterns<textarea id="templateForbiddenPatterns" rows="2" placeholder="Patterns Goro must avoid (e.g. no 'here's the thing', no guru binaries)."></textarea></label></details><div class="button-row"><button id="saveTemplate" class="button primary">Save template</button><button id="resetTemplateForm" class="button ghost">Reset</button></div><p id="templateStatus" class="status-note" role="status"></p></article><article class="panel"><p class="eyebrow">backup</p><h3>Import / export JSON</h3><div class="button-row"><button id="exportTemplates" class="button ghost">Export JSON</button><button id="importTemplates" class="button primary">Import JSON</button></div><label>Import/export JSON<textarea id="templateImportJson" rows="16"></textarea></label><label>Import mode<select id="templateImportMode"><option value="merge" selected>merge</option><option value="replace">replace</option></select></label><p id="templateImportStatus" class="status-note" role="status"></p></article></div>
+          <article class="panel bank-list-panel"><div class="panel-head"><div><p class="eyebrow">filter</p><h3>Template Library</h3></div><div class="button-row"><button id="seedDemoTemplates" class="button ghost">Seed local example templates</button><button id="resetDemoTemplates" class="button ghost danger">Remove demo templates</button><button id="refreshTemplates" class="button ghost">Refresh</button></div></div><p class="helper-copy">Templates are drafting recipes. Pick one in Workbench before rewriting to constrain the angle; local demo templates are examples, not proof or live signal.</p><div class="filter-row"><label>Search<input id="templateSearch" placeholder="name, body, intent..."></label><label>Tag<input id="templateTagFilter" placeholder="operator-loop"></label><label>Format<input id="templateFormatFilter" placeholder="contrarian"></label></div><div id="templateList" class="source-list empty">No templates saved yet.</div></article>
+        </div>
+      </section>
+
+      <section id="mentions" class="page superx-page" data-page="mentions">
+        <div class="page-heading">
+          <div>
+            <h2>Mentions</h2>
+            <p class="muted">See replies and mentions across all your connected accounts in one feed.</p>
+          </div>
+          <button class="button ghost" id="mentionsFiltersButton" type="button">⚙ Filters</button>
+        </div>
+
+        <!-- Account selector + count row, matching the SuperX reference layout -->
+        <div class="mentions-toolbar">
+          <div class="mentions-account-selector">
+            <select id="mentionsAccountSelect" aria-label="Connected X account"></select>
+          </div>
+          <span id="mentionsCount" class="mentions-count">0 mentions</span>
+        </div>
+
+        <!-- Per-mention AI draft context. Pulled into the Goro prompt so
+             private reply drafts reflect operator framing. Never sent to X. -->
+        <details class="mentions-context-panel" open>
+          <summary>AI draft context</summary>
+          <div class="mentions-context-grid">
+            <label>Operator context
+              <textarea id="mentionsContext" rows="2" placeholder="What should a good reply argue? Avoid inventing metrics or attribution."></textarea>
+            </label>
+            <label>Tone
+              <input id="mentionsTone" value="sharp, useful, no AI slop">
+            </label>
+          </div>
+          <p class="helper-copy">Both fields are sent to the server-side Goro adapter when you click <strong>AI draft</strong>. They are never sent to X.</p>
+        </details>
+
+        <!-- Blocker / setup state. Visible whenever the live X user-context
+             credential is missing or the fetch fails. Renders the exact
+             endpoint/credential need and never fabricates a feed. -->
+        <article id="mentionsBlocker" class="panel superx-card mentions-blocker" hidden>
+          <h3>Live mentions require a server-side read route</h3>
+          <p class="muted" id="mentionsBlockerText">Checking credentials…</p>
+          <p class="mentions-blocker-detail muted">Public X mention timelines need a user-context access token (X_USER_ACCESS_TOKEN), not the bearer token used for account inspiration. Drafts can be built privately once a read-only mentions source exists; the app does not post replies automatically.</p>
+          <p id="mentionsBlockerCredential" class="mentions-blocker-detail muted"></p>
+          <div class="button-row">
+            <button id="mentionsRefresh" class="button ghost" type="button">Re-check</button>
+            <button id="mentionsSeedDemo" class="button primary" type="button">Use local example mentions</button>
+          </div>
+        </article>
+
+        <!-- Feed of mention cards. Each card shows: parent/original tweet
+             context, the mention author, mention text, metrics row, and an
+             inline reply composer with AI affordance. -->
+        <div id="mentionsFeed" class="mentions-feed empty">No mentions loaded yet.</div>
+
+        <!-- Status / receipt for AI reply drafts. -->
+        <p id="mentionsReplyStatus" class="status-note" role="status" aria-live="polite"></p>
+
+        <!-- Local example mentions (only rendered when the operator opts
+             into demo mode or no live credential exists). -->
+        <template id="mentionsDemoCardTemplate">
+          <article class="mention-card panel superx-card" data-mention-demo="1">
+            <header class="mention-original">
+              <span class="mention-original-label">Replying to</span>
+              <span class="mention-original-author"></span>
+            </header>
+            <p class="mention-original-text"></p>
+            <div class="mention-author-row">
+              <span class="mention-avatar" aria-hidden="true"></span>
+              <div>
+                <strong class="mention-author-name"></strong>
+                <small class="mention-author-handle"></small>
+              </div>
+              <time class="mention-time"></time>
+            </div>
+            <p class="mention-text"></p>
+            <div class="mention-metrics">
+              <span class="mention-metric" data-metric="replies">💬 0</span>
+              <span class="mention-metric" data-metric="retweets">🔁 0</span>
+              <span class="mention-metric" data-metric="likes">♡ 0</span>
+              <span class="mention-metric" data-metric="views">👁 0</span>
+            </div>
+            <div class="mention-reply-composer">
+              <p class="mention-replying-to">Replying to <span class="mention-reply-target"></span></p>
+              <textarea class="mention-reply-input" rows="2" placeholder="Draft a private reply. Nothing is sent without explicit operator action."></textarea>
+              <div class="mention-reply-actions">
+                <button class="button ghost mention-ai-button" type="button">✨ AI draft</button>
+                <button class="button ghost mention-save-button" type="button">Save draft</button>
+                <span class="mention-ai-status" role="status" aria-live="polite"></span>
+              </div>
+            </div>
+          </article>
+        </template>
+      </section>
+
+      <section id="discover" class="page superx-page" data-page="discover">
+        <div class="page-heading">
+          <div>
+            <h2>Discover <span class="heading-info" title="Server-side read-only X search. No tokens ever reach the browser. Drafts and saves are local until you approve them." aria-label="About Discover">i</span></h2>
+            <p class="muted">Search X for posts on any topic and reply to them without leaving the page.</p>
+          </div>
+        </div>
+
+        <form id="discoverFetchForm" class="discover-fetch-bar" autocomplete="off" onsubmit="return false;">
+          <span class="discover-fetch-icon" aria-hidden="true">⌕</span>
+          <input id="discoverFetchUrl" type="url" inputmode="url" placeholder="Paste an X post link to reply to it..." aria-label="X post link">
+          <button id="discoverFetchButton" class="button primary" type="submit">Fetch</button>
+        </form>
+
+        <div class="discover-filters-row">
+          <button id="discoverFilters" class="button ghost" type="button" aria-expanded="false" aria-controls="discoverFiltersPanel">⚙ Filters</button>
+        </div>
+
+        <div id="discoverFiltersPanel" class="discover-filters-panel" hidden>
+          <label>Max results
+            <select id="discoverMaxResults">
+              <option value="10">10</option>
+              <option value="20" selected>20</option>
+              <option value="30">30</option>
+              <option value="50">50</option>
+            </select>
+          </label>
+          <label>Replies
+            <select id="discoverExcludeReplies">
+              <option value="true" selected>exclude</option>
+              <option value="false">include</option>
+            </select>
+          </label>
+          <label>Media
+            <select id="discoverMediaOnly">
+              <option value="false" selected>all posts</option>
+              <option value="true">media only</option>
+            </select>
+          </label>
+          <label>Provider
+            <select id="discoverProvider" disabled title="Provider is selected server-side based on available credentials">
+              <option>auto</option>
+            </select>
+          </label>
+        </div>
+
+        <p id="discoverStatus" class="status-note" role="status" aria-live="polite"></p>
+
+        <div id="discoverResults" class="discover-results empty" data-state="empty">
+          <article class="discover-empty" id="discoverEmptyState">
+            <div class="search-orb" aria-hidden="true">⌕</div>
+            <h3>What topics interest you?</h3>
+            <p class="muted">Enter topics to discover posts. We will find relevant posts for you to engage with.</p>
+            <form id="discoverTopicForm" class="discover-empty-form" autocomplete="off" onsubmit="return false;">
+              <input id="discoverTopicInput" type="text" placeholder="e.g. marketing, fitness, design, tech" aria-label="Discover topics">
+            </form>
+            <button id="discoverEmptyStartButton" class="button primary discover-empty-cta" type="button">Start Discovering</button>
+            <div id="discoverTopicChipRow" class="topic-chips discover-empty-chips" aria-label="Suggested topics">
+              <span data-discover-chip="AI systems">AI systems</span>
+              <span data-discover-chip="founder ops">founder ops</span>
+              <span data-discover-chip="Slack automation">Slack automation</span>
+              <span data-discover-chip="applied leverage">applied leverage</span>
+              <span data-discover-chip="Hermes agents">Hermes agents</span>
+              <span data-discover-chip="tweet lab">tweet lab</span>
+            </div>
+          </article>
+        </div>
+
+        <article id="discoverBlocker" class="panel discover-blocker" hidden>
+          <div class="panel-head compact">
+            <div>
+              <p class="eyebrow">live read unavailable</p>
+              <h3 id="discoverBlockerTitle">Discover needs a server-side X read credential.</h3>
+            </div>
+            <span class="pill warn" id="discoverBlockerStatus">blocked</span>
+          </div>
+          <p id="discoverBlockerBody" class="muted">Configure the server-side X read credential in 1Password or set it on the tweet-lab.service EnvironmentFile. The page does not invent results when the credential is missing.</p>
+          <pre id="discoverBlockerDetail" class="receipt compact-receipt" aria-label="Discover blocker details"></pre>
+        </article>
+      </section>
+
+      <section id="lists" class="page superx-page lists-page" data-page="lists">
+        <div class="page-heading"><div><h2>Lists</h2><p class="muted">Operator-curated groups of public X handles and saved sources. Used as seed sets for Discover and live X fetches. Stored locally; nothing posts from here.</p></div><div class="button-row"><button id="listsRefresh" class="button ghost" type="button">Refresh</button><button id="listsNewButton" class="button primary" type="button">+ New list</button></div></div>
+
+        <div class="lists-summary" id="listsSummary"></div>
+
+        <div class="lists-layout">
+          <aside class="lists-rail panel">
+            <p class="eyebrow">your lists</p>
+            <h3>Groups</h3>
+            <div id="listsList" class="lists-list empty">No lists yet.</div>
+            <p class="helper-copy">Lists live at <code>/api/tweet-lab/store/lists</code>. Persist entirely in <code>data/tweet-lab.json</code>.</p>
+          </aside>
+
+          <div class="lists-detail">
+            <article class="panel lists-form-panel" id="listsFormPanel" hidden>
+              <div class="panel-head">
+                <div><p class="eyebrow" id="listsFormEyebrow">new list</p><h3 id="listsFormTitle">New list</h3></div>
+                <div class="button-row"><button id="listsFormCancel" class="button ghost" type="button">Cancel</button><button id="listsFormSave" class="button primary" type="button">Save list</button></div>
+              </div>
+              <div class="grid two">
+                <label>Name<input id="listFieldName" placeholder="e.g. Founder ops daily" maxlength="120"></label>
+                <label>Kind<select id="listFieldKind"><option value="topic">topic</option><option value="account-group">account group</option><option value="watchlist">watchlist</option><option value="saved-source-group">saved source group</option></select></label>
+              </div>
+              <label>Description<textarea id="listFieldDescription" rows="2" placeholder="Why this group exists. Operator notes only." maxlength="1000"></textarea></label>
+              <label>Handles (one per line, 1-15 chars, public X handles only)<textarea id="listFieldHandles" rows="4" placeholder="LFGrowingThin&#10;pedropito_&#10;onstartups"></textarea></label>
+              <label>Tags (comma-separated)<input id="listFieldTags" placeholder="founder-ops, growth"></label>
+              <label>Notes (operator-only)<textarea id="listFieldNotes" rows="2" placeholder="When to use this list, what to avoid, etc."></textarea></label>
+              <p id="listsFormStatus" class="status-note" role="status"></p>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head"><div><p class="eyebrow">seed from saved sources</p><h3>Build a list from the Inspiration Bank</h3></div></div>
+              <p class="helper-copy">Pick saved sources by author handle to seed a new list. No source content is copied, only the public handles, so the list stays small and reusable.</p>
+              <div class="filter-row">
+                <label>Search<input id="listsSeedSearch" placeholder="author or text..."></label>
+                <button id="listsSeedGenerate" class="button ghost" type="button">Generate from current filters</button>
+              </div>
+              <div id="listsSeedPreview" class="lists-seed-preview empty">No saved sources to seed from yet.</div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="my-replies" class="page superx-page" data-page="my-replies">
+        <div class="page-heading">
+          <div>
+            <h2>My Replies</h2>
+            <p class="muted">Review the replies you have sent and see how each one is performing.</p>
+          </div>
+          <button id="myRepliesFilters" class="button ghost" type="button" aria-expanded="false">⚙ Filters</button>
+        </div>
+
+        <div id="myRepliesFiltersPanel" class="discover-filters-panel" hidden>
+          <div class="filter-row">
+            <label>Status
+              <select id="myRepliesStatusFilter">
+                <option value="">all</option>
+                <option value="draft">draft</option>
+                <option value="approved">approved</option>
+                <option value="scheduled">scheduled</option>
+                <option value="sent">sent</option>
+                <option value="manual-import">manual-import</option>
+              </select>
+            </label>
+            <label>Date range
+              <select id="myRepliesDateFilter">
+                <option value="">all time</option>
+                <option value="week">past week</option>
+                <option value="month">past month</option>
+                <option value="quarter">past quarter</option>
+              </select>
+            </label>
+            <label>Search
+              <input id="myRepliesSearch" placeholder="author, text, topic...">
+            </label>
+          </div>
+        </div>
+
+        <div id="myRepliesSummary" class="contacts-summary"></div>
+
+        <div id="myRepliesGrid" class="masonry-grid two-col">
+          <article class="post-card empty-state-card">
+            <h3>Reply drafts will appear here</h3>
+            <p>Reply drafts created from Mentions, Discover, or AI Writer show up here. Live sent-reply history is only available when a safe read-only endpoint is configured.</p>
+            <div class="tweet-meta"><span>read-only</span><span>approval required</span></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="contacts" class="page superx-page contacts-page" data-page="contacts">
+        <div class="page-heading"><div><h2>Contacts</h2><p class="muted">Operator contact book. Public handles only: no DMs, no emails, no inbound message bodies. Use this for cadence + role tracking; pull their public posts via Discover.</p></div><div class="button-row"><button id="contactsRefresh" class="button ghost" type="button">Refresh</button><button id="contactsNewButton" class="button primary" type="button">+ New contact</button></div></div>
+
+        <div class="contacts-summary" id="contactsSummary"></div>
+
+        <div class="contacts-layout">
+          <aside class="contacts-rail panel">
+            <p class="eyebrow">your contacts</p>
+            <h3>Operators</h3>
+            <div class="filter-row">
+              <label>Search<input id="contactsSearch" placeholder="handle, role, tags..."></label>
+              <label>Cadence<select id="contactsCadenceFilter"><option value="">any</option><option value="daily">daily</option><option value="weekly">weekly</option><option value="monthly">monthly</option><option value="quarterly">quarterly</option><option value="ad-hoc">ad-hoc</option></select></label>
+            </div>
+            <div id="contactsList" class="contacts-list empty">No contacts yet.</div>
+            <p class="helper-copy">Stored at <code>/api/tweet-lab/store/contacts</code>. Server rejects notes containing DM bodies, inbox threads, or emails.</p>
+          </aside>
+
+          <div class="contacts-detail">
+            <article class="panel contacts-form-panel" id="contactsFormPanel" hidden>
+              <div class="panel-head">
+                <div><p class="eyebrow" id="contactsFormEyebrow">new contact</p><h3 id="contactsFormTitle">New contact</h3></div>
+                <div class="button-row"><button id="contactsFormCancel" class="button ghost" type="button">Cancel</button><button id="contactsFormSave" class="button primary" type="button">Save contact</button></div>
+              </div>
+              <div class="grid two">
+                <label>Public X handle (1-15 chars, no @)<input id="contactFieldHandle" placeholder="LFGrowingThin" maxlength="16"></label>
+                <label>Display name<input id="contactFieldDisplayName" placeholder="operator name (optional)"></label>
+              </div>
+              <div class="grid two">
+                <label>Role<input id="contactFieldRole" placeholder="founder, growth, eng, ..."></label>
+                <label>Cadence<select id="contactFieldCadence"><option value="">unspecified</option><option value="daily">daily</option><option value="weekly">weekly</option><option value="monthly">monthly</option><option value="quarterly">quarterly</option><option value="ad-hoc">ad-hoc</option></select></label>
+              </div>
+              <label>Tags (comma-separated)<input id="contactFieldTags" placeholder="founder-ops, irl"></label>
+              <label>Notes (operator-only, no DMs / no emails)<textarea id="contactFieldNotes" rows="3" placeholder="Cadence reminders, what to engage with, when NOT to engage. No message bodies."></textarea></label>
+              <p class="helper-copy">Notes are scrubbed server-side: any DM/email pattern triggers a 400 from the store API.</p>
+              <p id="contactsFormStatus" class="status-note" role="status"></p>
+            </article>
+
+            <article class="panel" id="contactsViewPanel" hidden>
+              <div class="panel-head">
+                <div><p class="eyebrow">contact</p><h3 id="contactsViewHandle">@…</h3></div>
+                <div class="button-row"><button id="contactsViewEdit" class="button ghost" type="button">Edit</button><button id="contactsViewDelete" class="button ghost danger" type="button">Delete</button></div>
+              </div>
+              <dl id="contactsViewDetail" class="status-list"></dl>
+              <p id="contactsViewStatus" class="status-note" role="status"></p>
+            </article>
+
+            <article class="panel">
+              <div class="panel-head"><div><p class="eyebrow">safety rail</p><h3>What Contacts will not do</h3></div></div>
+              <ul class="safety-rail">
+                <li>No DM read, write, or cache. The DMs route documents this in detail.</li>
+                <li>No email or phone capture. Server blocks these patterns in notes.</li>
+                <li>No auto-follow, auto-engage, or scheduled actions. Contacts are operator metadata only.</li>
+                <li>No cross-account sync to X. Lists/Contacts are local-only JSON.</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section id="dms" class="page superx-page dms-page" data-page="dms">
+        <div class="page-heading"><div><h2>DMs</h2><p class="muted">Direct messages. Intentionally not supported by Tweet Lab.</p></div><button id="dmsRefresh" class="button ghost" type="button">Refresh status</button></div>
+
+        <div class="dms-status" id="dmsStatus">Loading feature status…</div>
+
+        <div class="grid two">
+          <article class="panel dms-explain-panel">
+            <p class="eyebrow">why this is off</p>
+            <h3>DMs require capabilities we don't have</h3>
+            <p id="dmsReason" class="dms-reason">Loading…</p>
+            <p class="helper-copy">No DM data is shown here. We will not display placeholder threads, cached DM bodies, or scraped messages.</p>
+          </article>
+
+          <article class="panel">
+            <p class="eyebrow">blocked by</p>
+            <h3>Exact blockers</h3>
+            <ul id="dmsBlockedBy" class="dms-blocked-by"><li>Loading…</li></ul>
+          </article>
+        </div>
+
+        <article class="panel">
+          <p class="eyebrow">if you ever want DMs</p>
+          <h3>What would need to be true first</h3>
+          <ol id="dmsCapabilities" class="dms-capabilities"><li>Loading…</li></ol>
+          <p class="helper-copy">These are preflight conditions, not commitments. None of this work is on the roadmap until Lucas approves a separate DM threat model.</p>
+        </article>
+      </section>
+
+      <section id="ai-writer" class="page superx-page" data-page="ai-writer">
+        <div class="page-heading ai-writer-heading"><div><h2>AI Writer</h2><p class="muted">Create engaging content in one click. Our AI researches trending viral formats and helps you craft the perfect post.</p></div><div class="button-row"><button id="aiWriterNewChat" class="button ghost">+ New chat</button><button id="aiWriterHistory" class="button ghost" aria-label="Chat history">⟲</button></div></div>
+
+        <div id="aiWriterComposer" class="ai-writer-composer">
+          <div class="composer-card">
+            <div id="aiWriterEmpty" class="composer-empty">
+              <p>Start by describing what you want to tweet about. I'll help you create engaging content that matches your voice.</p>
+              <div class="example-chips">
+                <button data-example="Create a list of productivity tips">Create a list of productivity tips</button>
+                <button data-example="Write about my latest project launch">Write about my latest project launch</button>
+                <button data-example="Tell a story about a recent challenge I overcame">Tell a story about a recent challenge I overcame</button>
+              </div>
+            </div>
+            <div id="aiWriterChat" class="ai-writer-chat hidden"></div>
+            <div id="aiWriterProvenance" class="ai-writer-provenance hidden"></div>
+            <div class="composer-input-row">
+              <label class="composer-input-label">
+                <textarea id="aiWriterPrompt" rows="2" placeholder="What do you want to tweet about?"></textarea>
+              </label>
+              <div class="composer-toolbar">
+                <div class="composer-tools-left">
+                  <button id="aiWriterAttach" type="button" aria-label="Attach file">▧</button>
+                  <button id="aiWriterImage" type="button" aria-label="Add image">☰</button>
+                  <button id="aiWriterLink" type="button" aria-label="Add link">🔗</button>
+                </div>
+                <div class="composer-tools-right">
+                  <label class="composer-toggle" title="Agent Mode performs multi-source retrieval before drafting">
+                    <span>Agent Mode</span>
+                    <button id="aiWriterAgentMode" class="toggle" type="button" aria-label="Agent Mode off" data-active="false"></button>
+                  </label>
+                  <label class="composer-toggle" title="Auto chooses source mix and shows what it used">
+                    <span>Auto</span>
+                    <button id="aiWriterAutoMode" class="toggle active" type="button" aria-label="Auto mode on" data-active="true"></button>
+                  </label>
+                  <button id="aiWriterSend" class="send-orb" type="button" aria-label="Generate draft">➤</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="aiWriterHistoryPanel" class="ai-writer-history hidden">
+          <div class="panel-head"><h3>Chat history</h3><button id="closeAiWriterHistory" class="button ghost">×</button></div>
+          <div id="aiWriterHistoryList" class="history-list">No chat history yet.</div>
+        </div>
+      </section>
+
+      <section id="settings" class="page" data-page="settings">
+        <article class="panel" id="operatorProfilePanel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">operator profile</p>
+              <h3>Style &amp; inspiration inputs</h3>
+              <p class="helper-copy">Drafts are generated from four inputs: your Obsidian vault, your X voice DNA, the accounts you choose to emulate, and the details you add below.</p>
+            </div>
+            <div class="button-row">
+              <button id="operatorProfileSave" class="button primary" type="button">Save profile</button>
+            </div>
+          </div>
+          <div class="operator-grid">
+            <div class="op-sources">
+              <div class="op-source op-source-auto"><span class="op-dot"></span> Obsidian vault <em id="opObsidianStatus">auto-loaded server-side</em></div>
+              <div class="op-source op-source-auto"><span class="op-dot"></span> X voice DNA <em id="opVoiceStatus">auto-loaded server-side</em></div>
+            </div>
+            <label class="op-field" for="opAboutMe">About you
+              <textarea id="opAboutMe" rows="4" placeholder="Who you are, what you do, your niche, and what makes your take different. The more specific, the better the drafts."></textarea>
+            </label>
+            <div class="op-field-row">
+              <label class="op-field" for="opAudience">Audience
+                <input id="opAudience" placeholder="e.g. founders, agency operators">
+              </label>
+              <label class="op-field" for="opTone">Voice / tone
+                <input id="opTone" placeholder="sharp, useful, no AI slop">
+              </label>
+            </div>
+            <label class="op-field" for="opTopics">Topics you post about
+              <input id="opTopics" placeholder="AI operators, agency leverage, workflow automation">
+            </label>
+            <label class="op-field" for="opAccountInput">Accounts to emulate
+              <div class="op-account-add">
+                <input id="opAccountInput" placeholder="@paulg, @naval, https://x.com/sama">
+                <button id="opAccountAdd" class="button" type="button">Add</button>
+              </div>
+            </label>
+            <div id="opAccountChips" class="op-chips empty">No accounts yet. Add handles you want the drafts to emulate.</div>
+            <p id="opSaveStatus" class="status-note" role="status"></p>
+          </div>
+        </article>
+        <article class="panel">
+          <div class="panel-head">
+            <div>
+              <p class="eyebrow">operator health panel</p>
+              <h3>Tweet Lab runtime health</h3>
+              <p class="helper-copy">Live signal of the last fetch, generation, and schedule attempt. Copy the diagnostics bundle when reporting issues; secrets are redacted before they ever leave the server.</p>
+            </div>
+            <div class="button-row">
+              <button id="refreshDiagnostics" class="button ghost">Refresh</button>
+              <button id="copyDiagnostics" class="button primary">Copy diagnostics</button>
+            </div>
+          </div>
+          <div class="health-grid">
+            <div class="health-cell">
+              <p class="eyebrow">app</p>
+              <dl id="diagApp" class="status-list compact"><div><dt>loading…</dt><dd></dd></div></dl>
+            </div>
+            <div class="health-cell">
+              <p class="eyebrow">goro adapter</p>
+              <dl id="diagGoro" class="status-list compact"><div><dt>loading…</dt><dd></dd></div></dl>
+            </div>
+            <div class="health-cell">
+              <p class="eyebrow">x live reads</p>
+              <dl id="diagX" class="status-list compact"><div><dt>loading…</dt><dd></dd></div></dl>
+            </div>
+            <div class="health-cell">
+              <p class="eyebrow">postiz schedule</p>
+              <dl id="diagPostiz" class="status-list compact"><div><dt>loading…</dt><dd></dd></div></dl>
+            </div>
+            <div class="health-cell">
+              <p class="eyebrow">storage</p>
+              <dl id="diagStorage" class="status-list compact"><div><dt>loading…</dt><dd></dd></div></dl>
+            </div>
+            <div class="health-cell">
+              <p class="eyebrow">last fetch detail</p>
+              <pre id="diagFetch" class="receipt">no live fetch yet</pre>
+            </div>
+            <div class="health-cell">
+              <p class="eyebrow">last generation detail</p>
+              <pre id="diagGoroDetail" class="receipt">no generation yet</pre>
+            </div>
+            <div class="health-cell">
+              <p class="eyebrow">last schedule detail</p>
+              <pre id="diagScheduleDetail" class="receipt">no schedule attempt yet</pre>
+            </div>
+          </div>
+        </article>
+        <article class="panel">
+          <p class="eyebrow">blocked-state remedies</p>
+          <h3>If something is red above</h3>
+          <p class="helper-copy">Plain-English fixes for the three safe-block states the server can report.</p>
+          <dl id="diagRemedies" class="status-list"><div><dt>Postiz</dt><dd>checking…</dd></div><div><dt>X reads</dt><dd>checking…</dd></div><div><dt>Goro</dt><dd>checking…</dd></div></dl>
+        </article>
+        <article class="panel">
+          <p class="eyebrow">safe boundary</p>
+          <h3>What the server holds (and never sends)</h3>
+          <p class="helper-copy">Credentials stay server-side. The diagnostics endpoint strips any token-shaped value before responding, so this panel can be screenshotted or pasted into Slack without leaking keys.</p>
+          <div id="configStatus" class="env-grid">
+            <code>X read credential</code>
+            <span>Read-only X API credential used for recent-search account inspiration. Optional: when missing, live reads are blocked, but drafts and templates still work.</span>
+            <code>Private environment file</code>
+            <span>Keep X and Postiz credentials outside the repository in a mode-0600 environment file loaded only by the server.</span>
+            <code>Postiz API credential</code>
+            <span>Required for real scheduling writes. Missing credential keeps scheduling safely blocked (safe-blocked, not silently dropped).</span>
+            <code>Goro Hermes profile</code>
+            <span>Hermes CLI profile used for real Goro generation when no Goro HTTP URL is configured. Defaults to <code>goro</code>.</span>
+            <code>Port / tailnet host</code>
+            <span>Local bind address and optional public/private proxy hostname used by the diagnostics summary block. Loopback is the safe default.</span>
+          </div>
+        </article>
+      </section>
+    </main>
+  </div>
+  <button id="floatingCompose" class="floating-compose" type="button" aria-label="Create a post">↗</button>
+  <nav id="mobileActionBar" class="mobile-action-bar" aria-label="Current route quick actions"></nav>
+
+  <!-- Right-side Compose drawer (SuperX "Create a post"): editor + Postiz auto-actions + scheduling -->
+  <div id="composeScrim" class="compose-scrim" hidden></div>
+  <aside id="composeDrawer" class="compose-drawer" aria-label="Compose a post" aria-hidden="true">
+    <header class="compose-head">
+      <div class="compose-tabs" role="tablist">
+        <button class="compose-tab active" data-compose-tab="compose" type="button">Compose</button>
+        <button class="compose-tab" data-compose-tab="drafts" type="button">Drafts</button>
+        <button class="compose-tab" data-compose-tab="scheduled" type="button">Scheduled</button>
+        <button class="compose-tab" data-compose-tab="sent" type="button">Sent</button>
+      </div>
+      <button id="composeClose" class="compose-close" type="button" aria-label="Close">✕</button>
+    </header>
+
+    <div class="compose-panel" data-compose-pane="compose">
+      <div class="compose-editor-wrap">
+        <div class="compose-author">
+          <span class="compose-avatar">L</span>
+          <div><strong>LUCAS</strong><span>@LucasSynnott</span></div>
+        </div>
+        <textarea id="composeText" class="compose-editor" placeholder="What's happening?"></textarea>
+        <div class="compose-editor-foot">
+          <span id="composeCount" class="compose-count">0</span>
+          <div class="compose-editor-actions">
+            <button id="composeRewrite" class="button ghost" type="button" title="Rewrite with Goro">Rewrite</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="compose-targets">
+        <label class="compose-target"><span class="compose-target-label">Post on X</span><input id="composePostX" type="checkbox" checked><span class="compose-switch"></span></label>
+        <label class="compose-target"><span class="compose-target-label">Post on BlueSky</span><input id="composePostBsky" type="checkbox"><span class="compose-switch"></span></label>
+      </div>
+
+      <details class="compose-advanced">
+        <summary>Advanced settings</summary>
+        <label class="compose-opt"><span><strong>Auto-retweet</strong><em>Retweet from a second account to boost reach</em></span><input id="optAutoRetweet" type="checkbox"><span class="compose-switch"></span></label>
+        <label class="compose-opt"><span><strong>Auto-plug</strong><em>Reply with a CTA after it performs</em></span><input id="optAutoPlug" type="checkbox"><span class="compose-switch"></span></label>
+        <label class="compose-opt"><span><strong>Auto-DM</strong><em>DM engagers a link automatically</em></span><input id="optAutoDm" type="checkbox"><span class="compose-switch"></span></label>
+        <label class="compose-opt"><span><strong>Auto-delete</strong><em>Remove the post after a set time</em></span><input id="optAutoDelete" type="checkbox"><span class="compose-switch"></span></label>
+        <label class="compose-opt"><span><strong>Super-followers only</strong><em>Restrict to paid subscribers</em></span><input id="optSuperFollowers" type="checkbox"><span class="compose-switch"></span></label>
+      </details>
+
+      <div class="compose-schedule">
+        <label class="field-label" for="composeWhen">Schedule for</label>
+        <input id="composeWhen" type="datetime-local">
+      </div>
+
+      <p id="composeStatus" class="status-note" role="status"></p>
+
+      <div class="compose-actions">
+        <button id="composeSaveDraft" class="button ghost" type="button">Save draft</button>
+        <button id="composeAddQueue" class="button ghost" type="button">Add to queue</button>
+        <button id="composeSchedule" class="button primary" type="button">Schedule</button>
+      </div>
+    </div>
+
+    <div class="compose-panel" data-compose-pane="drafts" hidden><div id="composeDraftsList" class="compose-list empty">No drafts yet.</div></div>
+    <div class="compose-panel" data-compose-pane="scheduled" hidden><div id="composeScheduledList" class="compose-list empty">Nothing scheduled.</div></div>
+    <div class="compose-panel" data-compose-pane="sent" hidden><div id="composeSentList" class="compose-list empty">Posting history appears here once Postiz is connected.</div></div>
+  </aside>
+
+  <script type="module" src="/app.js"></script>
+  <script src="/mobile-nav.js?v=cockpit-20260620-1" defer></script>
+  <script src="/operator-profile.js?v=cyber-20260622-1" defer></script>
+  <script src="/compose-drawer.js?v=cyber-20260622-1" defer></script>
+</body>
+</html>
