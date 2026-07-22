@@ -1,0 +1,178 @@
+import {
+  type CSSProperties,
+  ReactNode,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+import { useLocation } from "react-router";
+import { DocumentSidebar } from "@/components/sidebar/DocumentSidebar";
+import { useCreatePage } from "@/hooks/use-create-page";
+import { AgentSidebar } from "@agent-native/core/client";
+import { InvitationBanner } from "@agent-native/core/client/org";
+import { useIsMobile } from "@/hooks/use-mobile";
+import { Sheet, SheetContent } from "@/components/ui/sheet";
+import { IconMenu2 } from "@tabler/icons-react";
+import { Header } from "./Header";
+import { HeaderActionsProvider } from "./HeaderActions";
+
+const SIDEBAR_WIDTH_KEY = "sidebar-width";
+const DEFAULT_SIDEBAR_WIDTH = 240;
+const MIN_SIDEBAR_WIDTH = 240;
+const MAX_SIDEBAR_WIDTH = 480;
+
+// Routes whose page renders its own custom toolbar (with AgentToggleButton).
+// Layout still mounts Sidebar + AgentSidebar, but skips its own Header so
+// there's no double-header.
+const NO_HEADER_PREFIXES = ["/page/", "/extensions"];
+
+function loadSidebarWidth(): number {
+  try {
+    const stored = localStorage.getItem(SIDEBAR_WIDTH_KEY);
+    if (stored) {
+      const w = Number(stored);
+      if (w >= MIN_SIDEBAR_WIDTH && w <= MAX_SIDEBAR_WIDTH) return w;
+    }
+  } catch {}
+  return DEFAULT_SIDEBAR_WIDTH;
+}
+
+interface LayoutProps {
+  children: ReactNode;
+}
+
+export function Layout({ children }: LayoutProps) {
+  const location = useLocation();
+  const activeDocumentId =
+    location.pathname.match(/^\/page\/([^/]+)/)?.[1] ?? null;
+  // Bind chat to the currently-open document. Everywhere else (list view,
+  // settings) leaves scope null so general chats stay available.
+  const documentScope = useMemo(
+    () =>
+      activeDocumentId
+        ? { type: "document" as const, id: activeDocumentId }
+        : null,
+    [activeDocumentId],
+  );
+  const isMobile = useIsMobile();
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+  const [sidebarWidth, setSidebarWidth] = useState(loadSidebarWidth);
+
+  const handleSidebarResize = useCallback((width: number) => {
+    const clamped = Math.max(
+      MIN_SIDEBAR_WIDTH,
+      Math.min(MAX_SIDEBAR_WIDTH, width),
+    );
+    setSidebarWidth(clamped);
+    localStorage.setItem(SIDEBAR_WIDTH_KEY, String(clamped));
+  }, []);
+
+  const showHeader = !NO_HEADER_PREFIXES.some((prefix) =>
+    location.pathname.startsWith(prefix),
+  );
+
+  const createPage = useCreatePage();
+  useEffect(() => {
+    function onKeyDown(e: KeyboardEvent) {
+      if (!(e.metaKey || e.ctrlKey) || e.shiftKey || e.altKey) return;
+      if (e.key !== "n" && e.key !== "N") return;
+      const target = e.target as HTMLElement | null;
+      if (target?.isContentEditable) return;
+      const tag = target?.tagName;
+      if (tag === "INPUT" || tag === "TEXTAREA" || tag === "SELECT") return;
+      e.preventDefault();
+      void createPage();
+    }
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [createPage]);
+
+  const mobileSidebarTrigger = isMobile ? (
+    <button
+      type="button"
+      aria-label="Open sidebar"
+      className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-accent hover:text-foreground md:hidden"
+      onClick={() => setMobileSidebarOpen(true)}
+    >
+      <IconMenu2 size={18} />
+    </button>
+  ) : null;
+  const contentSidebarWidth = isMobile
+    ? 0
+    : sidebarCollapsed
+      ? 48
+      : sidebarWidth;
+
+  return (
+    <HeaderActionsProvider>
+      <div className="flex h-screen overflow-hidden bg-background">
+        {isMobile ? (
+          <>
+            <Sheet open={mobileSidebarOpen} onOpenChange={setMobileSidebarOpen}>
+              <SheetContent
+                side="left"
+                showClose={false}
+                className="w-[85vw] max-w-[85vw] sm:max-w-[85vw] p-0"
+              >
+                <DocumentSidebar
+                  activeDocumentId={activeDocumentId}
+                  collapsed={false}
+                  onToggleCollapsed={() => setMobileSidebarOpen(false)}
+                  onNavigate={() => setMobileSidebarOpen(false)}
+                />
+              </SheetContent>
+            </Sheet>
+            {showHeader ? null : (
+              <button
+                type="button"
+                aria-label="Open sidebar"
+                className="fixed left-3 top-3 z-30 flex h-10 w-10 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground shadow-sm transition-colors hover:bg-accent hover:text-foreground md:hidden"
+                onClick={() => setMobileSidebarOpen(true)}
+              >
+                <IconMenu2 size={18} />
+              </button>
+            )}
+          </>
+        ) : (
+          <DocumentSidebar
+            activeDocumentId={activeDocumentId}
+            collapsed={sidebarCollapsed}
+            onToggleCollapsed={() => setSidebarCollapsed((c) => !c)}
+            width={sidebarWidth}
+            onResize={handleSidebarResize}
+          />
+        )}
+        <AgentSidebar
+          position="right"
+          defaultOpen={!isMobile}
+          emptyStateText="Ask me anything about your documents"
+          suggestions={[
+            "Draft a PRD for a new feature",
+            "Summarize this page in 5 bullets",
+            "Pull this page from Notion",
+          ]}
+          scope={documentScope}
+        >
+          <main
+            className="relative flex min-w-0 min-h-0 flex-1 flex-col overflow-x-hidden"
+            style={
+              {
+                "--content-sidebar-width": `${contentSidebarWidth}px`,
+              } as CSSProperties
+            }
+          >
+            {showHeader ? (
+              <Header sidebarTrigger={mobileSidebarTrigger} />
+            ) : null}
+            <InvitationBanner
+              className={`${showHeader ? "pl-4" : "pl-16"} sm:pl-4 [&>div]:flex-wrap [&>div]:items-start [&>div>span]:min-w-0 [&>div>span]:flex-1`}
+            />
+            {children}
+          </main>
+        </AgentSidebar>
+      </div>
+    </HeaderActionsProvider>
+  );
+}

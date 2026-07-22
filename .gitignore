@@ -1,38 +1,76 @@
-# dependencies
-node_modules/
-
-# local env / secrets
-.env
-.env.*
-*.env
-!.env.example
-
-# logs
+# React Router generated types
+.react-router/
+# Logs
+logs
 *.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
+lerna-debug.log*
 
-# OS/editor
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
 .DS_Store
-.vscode/
-.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
 
-# transient local smoke scripts
-.*-smoke.mjs
-.qa-*.mjs
+.config/
+.env
+.output/
 
-# build/cache outputs
-dist/
-build/
-.cache/
-coverage/
+# Auth sessions (sensitive, never commit)
+data/.sessions.json
 
-# runtime state (contains drafts, contacts, analytics and audit records)
-data/tweet-lab.json
-data/*.tmp
+# Local SQLite database
+data/app.db
+data/app.db-shm
+data/app.db-wal
 
-# public documentation keeps one deliberately sanitized screenshot only
-docs/assets/*.png
-!docs/assets/dashboard.png
+# Stray SQLite files at the template root (real DB lives under data/)
+/app.db
+/app.db-shm
+/app.db-wal
+/local.db
+
+# Ephemeral editor state
+.editor-selection.json
+
+# MCP server debug logs
+mcp-logs.txt
+
+# Firestore-synced content (synced at runtime, not checked in)
+content/projects/
+
+# Builder.io auth keys (use BUILDER_API_KEY and BUILDER_PRIVATE_KEY env vars instead)
+content/.builder-auth.json
+
+# Learnings (personal preferences and memory — use learnings.defaults.md for tracked defaults)
+learnings.md
+
+build
+
+.generated/
+
+.vercel/
+
+# Playwright E2E (per-run auth state + report + results)
+/e2e/.auth/
+/e2e/.report.json
+test-results/
+
+# Root-level Playwright/auth state
+/.auth/
+
+# Agent Native generated deployment scratch
+/.deploy-tmp/
